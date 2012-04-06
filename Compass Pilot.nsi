@@ -4,7 +4,7 @@
 ; Charles Hepner (chepner@teamnorthwoods.com)
 ; Michael Randall (mrandall@teamnorthwoods.com)
 
-!define PROJECT_DIR "H:\Laptop Data\Documents\NSISPilotClientIinstaller"
+!define PROJECT_DIR "C:\Users\chepner\Git\CompassClientInstaller"
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Compass Pilot"
@@ -76,31 +76,18 @@ InstallDir "$PROGRAMFILES\Northwoods\Compass Pilot"
 ShowInstDetails show
 ShowUnInstDetails show
 
+
+
 Section "MainSection" SEC01
 
   Var /global IS_64_BIT
   Var /global DLL_INSTALL_PATH
-  
-  SetShellVarContext all
-  ; Install to the correct directory on 32 bit or 64 bit machines
-  IfFileExists $WINDIR\SysWOW64\*.* Is64bit Is32bit
-  Is32bit:
-    DetailPrint "32-bit OS detected."
-    ;MessageBox MB_OK "32 bit"
-    SetRegView 32
-    StrCpy $IS_64_BIT "False"
-    Goto End32Bitvs64BitCheck
-  Is64bit:
-    DetailPrint "64-bit OS detected."
-    ;MessageBox MB_OK "64 bit"
-    SetRegView 64
-    StrCpy $IS_64_BIT "True"
-  End32Bitvs64BitCheck:
-
 
   ${If} $IS_64_BIT == "True"
+    DetailPrint "64-bit OS detected."
     StrCpy $DLL_INSTALL_PATH "$WINDIR\SysWOW64"
   ${ElseIf} $IS_64_BIT == "False"
+    DetailPrint "32-bit OS detected."
     StrCpy $DLL_INSTALL_PATH "$WINDIR\System32"
   ${Else}
     ;help I'm not 64 or 32-bit
@@ -151,6 +138,21 @@ Section -Post
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
 SectionEnd
 
+Function .onInit
+
+  SetShellVarContext all
+  ; Install to the correct directory on 32 bit or 64 bit machines
+  IfFileExists $WINDIR\SysWOW64\*.* Is64bit Is32bit
+  Is32bit:
+    SetRegView 32
+    StrCpy $IS_64_BIT "False"
+    Goto End32Bitvs64BitCheck
+  Is64bit:
+    SetRegView 64
+    StrCpy $IS_64_BIT "True"
+  End32Bitvs64BitCheck:
+
+FunctionEnd
 
 Function un.onUninstSuccess
   HideWindow
@@ -168,7 +170,6 @@ Section Uninstall
   ; Install to the correct directory on 32 bit or 64 bit machines
   IfFileExists $WINDIR\SysWOW64\*.* Is64bit Is32bit
   Is32bit:
-    DetailPrint "32-bit OS detected."
     ;MessageBox MB_OK "32 bit"
     SetRegView 32
     StrCpy $IS_64_BIT "False"
