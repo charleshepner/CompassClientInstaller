@@ -4,4 +4,8 @@
 * LOW Update UI for the install wizard to ExperienceUI
 * ~~~[Done]~~~ HIGH Add .NET download/install functionality
 * MEDIUM Add install log to install directory
-* HIGH Get printer install/uninstall working
+* ~~~[Done]~~~ HIGH Get printer install/uninstall working
+* HIGH Fix issue with printing TifConvert to the EC2 server
+* HIGH Potential XP issue (exception loading type)
+* LOW add support for silent install command-line switch
+* LOW add support for answer files and command-line switch
