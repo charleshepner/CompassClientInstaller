@@ -1,0 +1,7 @@
+04/06/2012
+* HIGH Add icon to Add/Remove Programs entry
+* LOW Update icons for installer/uninstaller
+* LOW Update UI for the install wizard to ExperienceUI
+* HIGH Add .NET download/install functionality
+* MEDIUM Add install log to install directory
+* HIGH Get printer install/uninstall working
