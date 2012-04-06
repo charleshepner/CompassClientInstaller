@@ -11,6 +11,8 @@
 !define PRODUCT_VERSION "4.3"
 !define PRODUCT_PUBLISHER "Northwoods"
 !define PRODUCT_WEB_SITE "http://www.teamnorthwoods.com"
+!define PRODUCT_HELP_SITE "http://www.teamnorthwoods.com/contact/support-center/"
+!define PRODUCT_HELP_PHONE " 1 (866) 424-7800"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 
@@ -85,7 +87,7 @@ OutFile "${PRODUCT_NAME} ${PRODUCT_VERSION} Setup.exe"
 InstallDir "$PROGRAMFILES\Northwoods\Compass Pilot"
 ShowInstDetails show
 ShowUnInstDetails show
-
+RequestExecutionLevel admin
 
 
 Section "MainSection" SEC01
@@ -142,7 +144,11 @@ Section -Post
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "HelpLink" "${PRODUCT_HELP_SITE}"
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "HelpTelephone" "${PRODUCT_HELP_PHONE}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\CompassPilot.ico"
+  WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "EstimatedSize" 340
 SectionEnd
 
 Function .onInit
