@@ -58,8 +58,8 @@
 !addplugindir "${PROJECT_DIR}\Plugins"
 !addincludedir "${PROJECT_DIR}\Include"
 !include "LogicLib.nsh"
-!include DotNetChecker.nsh
-;!include "DotNetVer.nsh"
+!include "DotNetChecker.nsh"
+!include "WinVer.nsh"
 
 
 ; Defines ------
@@ -99,19 +99,6 @@ Section "MainSection" SEC01
   Var /global IS_64_BIT
   Var /global DLL_INSTALL_PATH
 
-;  ${If} ${HasDotNet4.0}
-;    DetailPrint "Microsoft .NET Framework 4.0 installed."
-;    ;${If} ${DOTNETVER_4_0} HasDotNetClientProfile 1
-;    ;   DetailPrint "Microsoft .NET Framework 4.0 (Client Profile) available."
-;    ;${EndIf}
-;    ${If} ${DOTNETVER_4_0} HasDotNetFullProfile 1
-;      DetailPrint "Microsoft .NET Framework 4.0 (Extended Profile) available."
-;    ${Else}
-;      Abort ".NET 4.0 Extended Profile must be installed prior to installing ${PRODUCT_NAME} ${PRODUCT_VERSION}"
-;    ${EndIf}
-;  ${Else}
-;    Abort ".NET 4.0 Extended Profile must be installed prior to installing ${PRODUCT_NAME} ${PRODUCT_VERSION}"
-;  ${EndIf}
 
   !insertmacro CheckNetFramework 40Full
 
@@ -126,7 +113,21 @@ Section "MainSection" SEC01
   ${EndIf}
 
  
- #printer creation goes here
+  ${If} ${IsWinXP}
+    DetailPrint "Windows XP detected."
+    DetailPrint "Installing Tifconvert Printer Port."
+    nsExec::Exec 'cscript C:\Windows\System32\prnport.vbs -a -r ${TIFCONVERT_PORT_NAME} -h ${PORT_HOST_ADDRESS} -q ${TIFCONVERT_PORT_QUEUE} -o lpr -n 515 -2e -md'
+    DetailPrint "Installing Tifconvert Printer."
+    nsExec::Exec 'cscript C:\Windows\System32\prnmngr.vbs -a -p "${TIFCONVERT_PRINTER_NAME}" -m "${PRINTER_DRIVER64}" -r "${TIFCONVERT_PORT_NAME}"'
+  ${EndIf}
+
+  ${If} ${IsWin7}
+    DetailPrint "Windows 7 detected."
+    DetailPrint "Installing Tifconvert Printer Port."
+    nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnport.vbs -a -r ${TIFCONVERT_PORT_NAME} -h ${PORT_HOST_ADDRESS} -q ${TIFCONVERT_PORT_QUEUE} -o lpr -n 515 -2e -md'
+    DetailPrint "Installing Tifconvert Printer."
+    nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnmngr.vbs -a -p "${TIFCONVERT_PRINTER_NAME}" -m "${PRINTER_DRIVER64}" -r "${TIFCONVERT_PORT_NAME}"'
+  ${EndIf}
 
   SetOverwrite ifnewer
   SetOutPath "$DLL_INSTALL_PATH"
@@ -215,6 +216,22 @@ Section Uninstall
   Delete "$INSTDIR\uninst.exe"
   Delete "$DLL_INSTALL_PATH\Ltbar7w15u.dll"
   Delete "$DLL_INSTALL_PATH\Ltbar7r15u.dll"
+  
+  ;START TIFCONVERT PRINTER UNINSTALL
+
+  ${If} ${IsWinXP}
+  DetailPrint "Uninstalling Windows XP Tifconvert"
+  nsExec::Exec 'cscript C:\Windows\System32\prnport.vbs -d -r ${TIFCONVERT_PORT_NAME}'
+  nsExec::Exec 'cscript C:\Windows\System32\prnmngr.vbs -d -p ${TIFCONVERT_PRINTER_NAME}'
+  ${EndIf}
+
+  ${If} ${IsWin7}
+  DetailPrint "Uninstalling Windows 7 Tifconvert"
+  nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnport.vbs -d -r ${TIFCONVERT_PORT_NAME}'
+  nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnmngr.vbs -d -p ${TIFCONVERT_PRINTER_NAME}'
+  ${EndIf}
+
+  ;END TIFCONVERT PRINTER UNINSTALL
 
   Delete "$DESKTOP\Compass Pilot.url"
   Delete "$SMPROGRAMS\Compass Pilot\Uninstall.lnk"
