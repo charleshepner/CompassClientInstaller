@@ -83,6 +83,20 @@ Section "MainSection" SEC01
   Var /global IS_64_BIT
   Var /global DLL_INSTALL_PATH
 
+  ${If} ${HasDotNet4.0}
+    DetailPrint "Microsoft .NET Framework 4.0 installed."
+    ;${If} ${DOTNETVER_4_0} HasDotNetClientProfile 1
+    ;   DetailPrint "Microsoft .NET Framework 4.0 (Client Profile) available."
+    ;${EndIf}
+    ${If} ${DOTNETVER_4_0} HasDotNetFullProfile 1
+      DetailPrint "Microsoft .NET Framework 4.0 (Extended Profile) available."
+    ${Else}
+      Abort ".NET 4.0 Extended Profile must be installed prior to installing ${PRODUCT_NAME} ${PRODUCT_VERSION}"
+    ${EndIf}
+  ${Else}
+    Abort ".NET 4.0 Extended Profile must be installed prior to installing ${PRODUCT_NAME} ${PRODUCT_VERSION}"
+  ${EndIf}
+
   ${If} $IS_64_BIT == "True"
     DetailPrint "64-bit OS detected."
     StrCpy $DLL_INSTALL_PATH "$WINDIR\SysWOW64"
@@ -93,24 +107,6 @@ Section "MainSection" SEC01
     ;help I'm not 64 or 32-bit
   ${EndIf}
 
-
-  ${If} ${HasDotNet4.0}
-
-    DetailPrint "Microsoft .NET Framework 4.0 installed."
-
-    ${If} ${DOTNETVER_4_0} HasDotNetClientProfile 1
-       DetailPrint "Microsoft .NET Framework 4.0 (Client Profile) available."
-    ${EndIf}
-    ${If} ${DOTNETVER_4_0} HasDotNetFullProfile 1
-    
-    ;DetailPrint "Microsoft .NET Framework 1.0 installed."
-    ;MessageBox MB_OK "Aborting installtion. .NET 1.0 must be installed prior to installing ${PRODUCT_NAME} ${PRODUCT_VERSION}"
-    ;Abort ".NET 4.0 Extended Profile must be installed prior to installing ${PRODUCT_NAME} ${PRODUCT_VERSION}"
-       DetailPrint "Microsoft .NET Framework 4.0 (Extended Profile) available."
-    ${EndIf}
-
-  ${EndIf}
- 
  
  #printer creation goes here
 
