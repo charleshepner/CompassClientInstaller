@@ -118,7 +118,7 @@ Section "MainSection" SEC01
     DetailPrint "Installing Tifconvert Printer Port."
     nsExec::Exec 'cscript C:\Windows\System32\prnport.vbs -a -r ${TIFCONVERT_PORT_NAME} -h ${PORT_HOST_ADDRESS} -q ${TIFCONVERT_PORT_QUEUE} -o lpr -n 515 -2e -md'
     DetailPrint "Installing Tifconvert Printer."
-    nsExec::Exec 'cscript C:\Windows\System32\prnmngr.vbs -a -p "${TIFCONVERT_PRINTER_NAME}" -m "${PRINTER_DRIVER64}" -r "${TIFCONVERT_PORT_NAME}"'
+    nsExec::Exec 'cscript C:\Windows\System32\prnmngr.vbs -a -p "${TIFCONVERT_PRINTER_NAME}" -m "${PRINTER_DRIVER32}" -r "${TIFCONVERT_PORT_NAME}"'
   ${EndIf}
 
   ${If} ${IsWin7}
