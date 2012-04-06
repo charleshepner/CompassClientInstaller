@@ -9,3 +9,4 @@
 * HIGH Potential XP issue (exception loading type)
 * LOW add support for silent install command-line switch
 * LOW add support for answer files and command-line switch
+* HIGH Fix issue with .NET version downloader when canceling out of the download
