@@ -24,6 +24,10 @@
 !define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\modern-install.ico"
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
 !define MUI_FINISHPAGE_NOAUTOCLOSE
+!define MUI_FINISHPAGE_SHOWREADME ""
+!define MUI_FINISHPAGE_SHOWREADME_CHECKED
+!define MUI_FINISHPAGE_SHOWREADME_TEXT "Create Desktop Shortcut"
+!define MUI_FINISHPAGE_SHOWREADME_FUNCTION CreatePilotDesktopShortcut
 
 ; Welcome page
 !insertmacro MUI_PAGE_WELCOME
@@ -68,6 +72,12 @@
 !define PORT_HOST_ADDRESS "ec2-23-21-113-174.compute-1.amazonaws.com"
 !define PILOT_LAUNCH_URL "http://ec2-23-21-113-174.compute-1.amazonaws.com/compassframework/compassapi.application"
 
+
+!macro CreateInternetShortcut FILENAME URL ICONFILE ICONINDEX
+WriteINIStr "${FILENAME}.url" "InternetShortcut" "URL" "${URL}"
+WriteINIStr "${FILENAME}.url" "InternetShortcut" "IconFile" "${ICONFILE}"
+WriteINIStr "${FILENAME}.url" "InternetShortcut" "IconIndex" "${ICONINDEX}"
+!macroend
 
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
@@ -115,13 +125,14 @@ Section "MainSection" SEC01
   File "${PROJECT_DIR}\Ltbar7r15u.dll"
   File "${PROJECT_DIR}\Ltbar7w15u.dll"
   SetOutPath "$INSTDIR"
+  File "${PROJECT_DIR}\CompassPilot.ico"
+  ;LogSet on
 
 SectionEnd
 
 Section -AdditionalIcons
-  WriteIniStr "$INSTDIR\${PRODUCT_NAME}.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
   CreateDirectory "$SMPROGRAMS\Compass Pilot"
-  CreateShortCut "$SMPROGRAMS\Compass Pilot\Website.lnk" "$INSTDIR\${PRODUCT_NAME}.url"
+  !insertmacro CreateInternetShortcut "$SMPROGRAMS\Compass Pilot\Compass Pilot" "${PILOT_LAUNCH_URL}" "$INSTDIR\CompassPilot.ico" "0"
   CreateShortCut "$SMPROGRAMS\Compass Pilot\Uninstall.lnk" "$INSTDIR\uninst.exe"
 SectionEnd
 
@@ -135,7 +146,6 @@ Section -Post
 SectionEnd
 
 Function .onInit
-
   SetShellVarContext all
   ; Install to the correct directory on 32 bit or 64 bit machines
   IfFileExists $WINDIR\SysWOW64\*.* Is64bit Is32bit
@@ -147,7 +157,10 @@ Function .onInit
     SetRegView 64
     StrCpy $IS_64_BIT "True"
   End32Bitvs64BitCheck:
+FunctionEnd
 
+Function CreatePilotDesktopShortcut
+  !insertmacro CreateInternetShortcut "$DESKTOP\Compass Pilot" "${PILOT_LAUNCH_URL}" "$INSTDIR\CompassPilot.ico" "0"
 FunctionEnd
 
 Function un.onUninstSuccess
@@ -186,13 +199,14 @@ Section Uninstall
     ;help I'm not 64 or 32-bit
   ${EndIf}
   
-  Delete "$INSTDIR\${PRODUCT_NAME}.url"
+  Delete "$INSTDIR\CompassPilot.ico"
   Delete "$INSTDIR\uninst.exe"
   Delete "$DLL_INSTALL_PATH\Ltbar7w15u.dll"
   Delete "$DLL_INSTALL_PATH\Ltbar7r15u.dll"
 
+  Delete "$DESKTOP\Compass Pilot.url"
   Delete "$SMPROGRAMS\Compass Pilot\Uninstall.lnk"
-  Delete "$SMPROGRAMS\Compass Pilot\Website.lnk"
+  Delete "$SMPROGRAMS\Compass Pilot\Compass Pilot.url"
 
   RMDir "$SMPROGRAMS\Compass Pilot"
   RMDir "$INSTDIR"
