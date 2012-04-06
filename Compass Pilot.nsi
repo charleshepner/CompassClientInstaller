@@ -15,6 +15,7 @@
 !define PRODUCT_HELP_PHONE " 1 (866) 424-7800"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
+!define PRODUCT_SIZE_KB 340
 
 
 
@@ -54,9 +55,12 @@
 
 ; Includes ------
 ; Add includes for any needed header files here
+!addplugindir "${PROJECT_DIR}\Plugins"
 !addincludedir "${PROJECT_DIR}\Include"
 !include "LogicLib.nsh"
-!include "DotNetVer.nsh"
+!include DotNetChecker.nsh
+;!include "DotNetVer.nsh"
+
 
 ; Defines ------
 ; Define variables here
@@ -95,19 +99,21 @@ Section "MainSection" SEC01
   Var /global IS_64_BIT
   Var /global DLL_INSTALL_PATH
 
-  ${If} ${HasDotNet4.0}
-    DetailPrint "Microsoft .NET Framework 4.0 installed."
-    ;${If} ${DOTNETVER_4_0} HasDotNetClientProfile 1
-    ;   DetailPrint "Microsoft .NET Framework 4.0 (Client Profile) available."
-    ;${EndIf}
-    ${If} ${DOTNETVER_4_0} HasDotNetFullProfile 1
-      DetailPrint "Microsoft .NET Framework 4.0 (Extended Profile) available."
-    ${Else}
-      Abort ".NET 4.0 Extended Profile must be installed prior to installing ${PRODUCT_NAME} ${PRODUCT_VERSION}"
-    ${EndIf}
-  ${Else}
-    Abort ".NET 4.0 Extended Profile must be installed prior to installing ${PRODUCT_NAME} ${PRODUCT_VERSION}"
-  ${EndIf}
+;  ${If} ${HasDotNet4.0}
+;    DetailPrint "Microsoft .NET Framework 4.0 installed."
+;    ;${If} ${DOTNETVER_4_0} HasDotNetClientProfile 1
+;    ;   DetailPrint "Microsoft .NET Framework 4.0 (Client Profile) available."
+;    ;${EndIf}
+;    ${If} ${DOTNETVER_4_0} HasDotNetFullProfile 1
+;      DetailPrint "Microsoft .NET Framework 4.0 (Extended Profile) available."
+;    ${Else}
+;      Abort ".NET 4.0 Extended Profile must be installed prior to installing ${PRODUCT_NAME} ${PRODUCT_VERSION}"
+;    ${EndIf}
+;  ${Else}
+;    Abort ".NET 4.0 Extended Profile must be installed prior to installing ${PRODUCT_NAME} ${PRODUCT_VERSION}"
+;  ${EndIf}
+
+  !insertmacro CheckNetFramework 40Full
 
   ${If} $IS_64_BIT == "True"
     DetailPrint "64-bit OS detected."
