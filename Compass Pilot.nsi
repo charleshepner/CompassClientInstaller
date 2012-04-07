@@ -142,7 +142,8 @@ SectionEnd
 Section -AdditionalIcons
   CreateDirectory "$SMPROGRAMS\Compass Pilot"
   !insertmacro CreateInternetShortcut "$SMPROGRAMS\Compass Pilot\Compass Pilot" "${PILOT_LAUNCH_URL}" "$INSTDIR\CompassPilot.ico" "0"
-  CreateShortCut "$SMPROGRAMS\Compass Pilot\Uninstall.lnk" "$INSTDIR\uninst.exe"
+  !insertmacro CreateInternetShortcut "$SMPROGRAMS\Compass Pilot\Northwoods Website" "http://www.teamnorthwoods.com" "" "0"
+  ;CreateShortCut "$SMPROGRAMS\Compass Pilot\Uninstall.lnk" "$INSTDIR\uninst.exe"
 SectionEnd
 
 Section -Post
