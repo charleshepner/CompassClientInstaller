@@ -56,10 +56,9 @@
 	${EndIf}
 
 NoDotNET:
-	MessageBox MB_YESNOCANCEL|MB_ICONEXCLAMATION \
-	".NET Framework not installed. Required version: $dotNetReadableVersion.$\nDownload .NET Framework $dotNetReadableVersion from www.microsoft.com?" \
-	/SD IDYES IDYES DownloadDotNET IDNO NewDotNET
-	goto GiveUpDotNET ;IDCANCEL
+	MessageBox MB_YESNO|MB_ICONEXCLAMATION|MB_DEFBUTTON1 \
+	".NET Framework not installed. Required version: $dotNetReadableVersion.$\r$\nDownload .NET Framework $dotNetReadableVersion from www.microsoft.com?" \
+	/SD IDYES IDYES DownloadDotNET IDNO GiveUpDotNET
 
 DownloadDotNET:
 	DetailPrint "Beginning download of .NET Framework $dotNetReadableVersion."
@@ -68,13 +67,17 @@ DownloadDotNET:
 
 	Pop $0
 	${If} $0 == "cancel"
-		MessageBox MB_YESNO|MB_ICONEXCLAMATION \
-		"Download cancelled.  Continue Installation?" \
-		IDYES NewDotNET IDNO GiveUpDotNET
+		;MessageBox MB_YESNO|MB_ICONEXCLAMATION \
+		;"Download cancelled.  Continue Installation?" \
+		;IDYES NewDotNET IDNO GiveUpDotNET
+		DetailPrint "Download cancelled."
+		goto GiveUpDotNET
 	${ElseIf} $0 != "success"
-		MessageBox MB_YESNO|MB_ICONEXCLAMATION \
-		"Download failed:$\n$0$\n$\nContinue Installation?" \
-		IDYES NewDotNET IDNO GiveUpDotNET
+		;MessageBox MB_YESNO|MB_ICONEXCLAMATION \
+		;"Download failed:$\r$\n$0$\r$\n$\r$\nContinue Installation?" \
+		;IDYES NewDotNET IDNO GiveUpDotNET
+		DetailPrint "Download failed."
+		goto GiveUpDotNET
 	${EndIf}
 
 	DetailPrint "Pausing installation while downloaded .NET Framework installer runs."

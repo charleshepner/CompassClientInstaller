@@ -221,15 +221,15 @@ Section Uninstall
   ;START TIFCONVERT PRINTER UNINSTALL
 
   ${If} ${IsWinXP}
-  DetailPrint "Uninstalling Windows XP Tifconvert"
-  nsExec::Exec 'cscript C:\Windows\System32\prnport.vbs -d -r ${TIFCONVERT_PORT_NAME}'
-  nsExec::Exec 'cscript C:\Windows\System32\prnmngr.vbs -d -p ${TIFCONVERT_PRINTER_NAME}'
+    DetailPrint "Uninstalling Windows XP Tifconvert"
+    nsExec::Exec 'cscript C:\Windows\System32\prnport.vbs -d -r ${TIFCONVERT_PORT_NAME}'
+    nsExec::Exec 'cscript C:\Windows\System32\prnmngr.vbs -d -p ${TIFCONVERT_PRINTER_NAME}'
   ${EndIf}
 
   ${If} ${IsWin7}
-  DetailPrint "Uninstalling Windows 7 Tifconvert"
-  nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnport.vbs -d -r ${TIFCONVERT_PORT_NAME}'
-  nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnmngr.vbs -d -p ${TIFCONVERT_PRINTER_NAME}'
+    DetailPrint "Uninstalling Windows 7 Tifconvert"
+    nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnport.vbs -d -r ${TIFCONVERT_PORT_NAME}'
+    nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnmngr.vbs -d -p ${TIFCONVERT_PRINTER_NAME}'
   ${EndIf}
 
   ;END TIFCONVERT PRINTER UNINSTALL
