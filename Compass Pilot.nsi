@@ -24,7 +24,7 @@
 
 ; MUI Settings
 !define MUI_ABORTWARNING
-!define MUI_ICON "${PROJECT_DIR}\CompassPilot.ico"
+!define MUI_ICON "${PROJECT_DIR}\Resources\CompassPilot.ico"
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_FINISHPAGE_SHOWREADME ""
@@ -87,7 +87,7 @@ WriteINIStr "${FILENAME}.url" "InternetShortcut" "IconIndex" "${ICONINDEX}"
 
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "${PRODUCT_NAME} ${PRODUCT_VERSION} Setup.exe"
+OutFile "Installer\${PRODUCT_NAME} ${PRODUCT_VERSION} Setup.exe"
 InstallDir "$PROGRAMFILES\Northwoods\Compass Pilot"
 ShowInstDetails show
 ShowUnInstDetails show
@@ -98,7 +98,6 @@ Section "MainSection" SEC01
 
   Var /global IS_64_BIT
   Var /global DLL_INSTALL_PATH
-
 
   !insertmacro CheckNetFramework 40Full
 
@@ -131,10 +130,10 @@ Section "MainSection" SEC01
 
   SetOverwrite ifnewer
   SetOutPath "$DLL_INSTALL_PATH"
-  File "${PROJECT_DIR}\Ltbar7r15u.dll"
-  File "${PROJECT_DIR}\Ltbar7w15u.dll"
+  File "${PROJECT_DIR}\Resources\Ltbar7r15u.dll"
+  File "${PROJECT_DIR}\Resources\Ltbar7w15u.dll"
   SetOutPath "$INSTDIR"
-  File "${PROJECT_DIR}\CompassPilot.ico"
+  File "${PROJECT_DIR}\Resources\CompassPilot.ico"
   ;LogSet on
 
 SectionEnd
