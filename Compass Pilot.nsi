@@ -12,7 +12,7 @@
 !define PRODUCT_PUBLISHER "Northwoods"
 !define PRODUCT_WEB_SITE "http://www.teamnorthwoods.com"
 !define PRODUCT_HELP_SITE "http://www.teamnorthwoods.com/contact/support-center/"
-!define PRODUCT_HELP_PHONE " 1 (866) 424-7800"
+!define PRODUCT_HELP_PHONE "1 (866) 424-7800"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 !define PRODUCT_SIZE_KB 340
@@ -24,7 +24,7 @@
 
 ; MUI Settings
 !define MUI_ABORTWARNING
-!define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\modern-install.ico"
+!define MUI_ICON "${PROJECT_DIR}\CompassPilot.ico"
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_FINISHPAGE_SHOWREADME ""
@@ -235,8 +235,9 @@ Section Uninstall
   ;END TIFCONVERT PRINTER UNINSTALL
 
   Delete "$DESKTOP\Compass Pilot.url"
-  Delete "$SMPROGRAMS\Compass Pilot\Uninstall.lnk"
+  ;Delete "$SMPROGRAMS\Compass Pilot\Uninstall.lnk"
   Delete "$SMPROGRAMS\Compass Pilot\Compass Pilot.url"
+  Delete "$SMPROGRAMS\Compass Pilot\Northwoods Website.url"
 
   RMDir "$SMPROGRAMS\Compass Pilot"
   RMDir "$INSTDIR"
