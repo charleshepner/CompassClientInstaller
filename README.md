@@ -21,4 +21,4 @@ This installer deploys the client-side components needed to launch and run Compa
 
 ## Notes
 
-The installer is built using NSIS.
+The installer is built using NSIS 2.46.  In order to enable logging support, the advanced logging build was used (located here http://nsis.sourceforge.net/Special_Builds).

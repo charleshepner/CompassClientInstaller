@@ -93,11 +93,12 @@ ShowInstDetails show
 ShowUnInstDetails show
 RequestExecutionLevel admin
 
-
 Section "MainSection" SEC01
 
   Var /global IS_64_BIT
   Var /global DLL_INSTALL_PATH
+
+  LogSet on
 
   !insertmacro CheckNetFramework 40Full
 
@@ -134,7 +135,7 @@ Section "MainSection" SEC01
   File "${PROJECT_DIR}\Resources\Ltbar7w15u.dll"
   SetOutPath "$INSTDIR"
   File "${PROJECT_DIR}\Resources\CompassPilot.ico"
-  ;LogSet on
+
 
 SectionEnd
 
@@ -212,8 +213,10 @@ Section Uninstall
     ;help I'm not 64 or 32-bit
   ${EndIf}
   
-  Delete "$INSTDIR\CompassPilot.ico"
+
   Delete "$INSTDIR\uninst.exe"
+  Delete "$INSTDIR\CompassPilot.ico"
+  Delete "$INSTDIR\install.log"
   Delete "$DLL_INSTALL_PATH\Ltbar7w15u.dll"
   Delete "$DLL_INSTALL_PATH\Ltbar7r15u.dll"
   
