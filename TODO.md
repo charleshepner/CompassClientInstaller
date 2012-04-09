@@ -7,7 +7,7 @@ TODO
 * *Added 4/6/2012* Add .NET download/install functionality **Completed 4/6/2012**
 * *Added 4/6/2012* Get printer install/uninstall working **Completed 4/6/2012**
 * *Added 4/6/2012* Fix issue with .NET version downloader when canceling out of the download **Completed 4/7/2012**
-* *Added 4/6/2012* Fix issue with printing TifConvert to the EC2 server
+* *Added 4/6/2012* Fix issue with printing TifConvert to the EC2 server **Completed 4/9/2012**
 * *Added 4/6/2012* Potential XP issue (exception loading type)
 
 ## Medium Priority
