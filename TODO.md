@@ -12,7 +12,7 @@ TODO
 
 ## Medium Priority
 
-* *Added 4/6/2012* Add install log to install directory
+* *Added 4/6/2012* Add install log to install directory **Completed 4/9/2012**
 
 ## Low Priority
 
