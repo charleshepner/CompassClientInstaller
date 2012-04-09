@@ -20,7 +20,7 @@
 
 
 ; MUI start ------
-!include "MUI2.nsh"
+!include "XPUI.nsh"
 
 ; MUI Settings
 !define MUI_ABORTWARNING
