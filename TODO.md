@@ -17,6 +17,6 @@ TODO
 ## Low Priority
 
 * *Added 4/6/2012* Update icons for installer/uninstaller **Completed 4/7/2012**
-* *Added 4/6/2012* Update UI for the install wizard to ExperienceUI
+* *Added 4/6/2012* Update UI for the install wizard to ExperienceUI **Completed 4/9/2012 (on experienceui branch)**
 * *Added 4/6/2012* Add support for silent install command-line switch
 * *Added 4/6/2012* Add support for answer files and command-line switch
