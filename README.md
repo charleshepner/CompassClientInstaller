@@ -72,7 +72,6 @@ In order to develop this installer, see the following pre-requisites:
 
 * NSIS 2.46 (install from http://nsis.sourceforge.net/Download)
 * A copy of the NSIS compiler (makensis.exe) with logging support (install from http://nsis.sourceforge.net/Special_Builds)
-* A copy of ExperienceUI 1.3.2 (http://experienceui.enanocms.org/experienceui/download)
 
 A NSIS editor is not required but helps a lot.  HM NIS Edit from HMSoft has worked well for me (http://hmne.sourceforge.net/).  Also note that Notepad++ has built-in syntax highlighting for .nsi and .nsh files (Language > N > NSIS).  Finally, NSIS Dialog Designer by Coolsoft has been invaluable for creating custom pages in the setup wizard (http://coolsoft.altervista.org/en/nsisdialogdesigner).
 
