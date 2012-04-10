@@ -15,9 +15,10 @@ TODO
 * *Added 4/6/2012* Add install log to install directory **Completed 4/9/2012**
 * *Added 4/9/2012* Add more logging via LogText for each DetailPrint
 * *Added 4/9/2012* Add custom page to set Pilot launch URL and print server name **Completed 4/10/2012**
-* *Added 4/10/2012* Add documentation for developers wanting to modify this installer
-* *Added 4/10/2012* Add documentation for use of installer including silent mode and answer file
+* *Added 4/10/2012* Add documentation for developers wanting to modify this installer **Completed 4/10/2012**
+* *Added 4/10/2012* Add documentation for use of installer including silent mode and answer file **Completed 4/10/2012**
 * *Added 4/10/2012* Add further comments to the source code
+* *Added 4/10/2012* Merge ExperienceUI into the master branch
 
 ## Low Priority
 
@@ -28,3 +29,4 @@ TODO
 * *Added 4/10/2012* Add ability to enable/disable the creation of the desktop shortcut and start menu shortcuts from the answer file
 * *Added 4/10/2012* Add creation of the Compass Forms printer and control over which printers get created in answer file
 * *Added 4/10/2012* Add creation of Capture Kiosk and Self-scan Kiosk shortcuts and control over them in the answer file
+* *Added 4/10/2012* Add ability to control installation path in the answer file

@@ -50,8 +50,22 @@ The user can choose whether or not to create a desktop shorcut (selected by defa
 
 ## Silent/Unattended Install
 
+This installer can be run silently just by adding the command-line parameter /S (case-sensitive).  An answer file can be provided so that the installer will know what values to use for the configurable areas in the wizard.  The installer will automatically detect the presence of answer.txt in the same folder as the installer executable and will draw configuration values from it.
 
+Answer.txt is formatted in the INI file format.  It has one section [Settings].  It has 3 possible key value pairs:
 
+* CompassClickOnceProtocol
+  * Possible values: http:// or https://
+  * e.g. http://
+* CompassClickOnceURL
+  * Possible values: the URL (without the protocal prefix) to the .application file of the Compass client
+  * e.g. appserver01/compassframework/compassapi.application
+* CompassPrintServer
+  * Possible values: the network or DNS name of the print server (for virtual printing) where RPM is installed
+  * e.g. printserver01
+  
+If the answer file is present and the installer is run interactively, the installer will use the values from the answer file in the wizard as the defaults instead of the compiled in default values (e.g. [CompassClickOnceServer]/compassframework/compassapi.application and [CompassPrintServer]).
+  
 ## Developing
 
 In order to develop this installer, see the following pre-requisites:
@@ -88,7 +102,9 @@ ${If} ${IsWin7}
 ${Else}
 ${EndIf}
 ```
-* .NET version detection from a third-party header DotNetChecker.nsh provising download and install of the required version.  I made some custom changes to the DotNetChecker.nsh file to prevent the user from continuing with the install if they canceled out of the dialog prompted them to install .NET.
-```!insertmacro CheckNetFramework 40Full```
+* .NET version detection from a third-party header DotNetChecker.nsh providing download and install of the required version.  I made some custom changes to the DotNetChecker.nsh file to prevent the user from continuing with the install if they canceled out of the dialog prompted them to install .NET.
+```!insertmacro CheckNetFramework 40Full
+```
 * A macro is being used to create Internet shortcuts
-```!insertmacro CreateInternetShortcut "path_to_new_shortcut" "URL" "path_to_icon" "0"```
+```!insertmacro CreateInternetShortcut "path_to_new_shortcut" "URL" "path_to_icon" "0"
+```
