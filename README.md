@@ -25,7 +25,7 @@ This installer deploys the client-side components needed to launch and run Compa
 
 This installer can be run interactively just by launching the executable.  It requires administrative privileges. 
 
-_Choose Install Location Page_
+**Choose Install Location Page**
 
 Installation files will be written by default to:
 
@@ -34,7 +34,7 @@ Installation files will be written by default to:
 
 The files written to the installation location at this time are the Compass Pilot icon, the install log, and the uninstaller executable.
 
-_Set Compass Client Components Settings Page_
+**Set Compass Client Components Settings Page**
 
 Three customizable settings appear after the install location is chosen.
 
