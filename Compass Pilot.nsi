@@ -20,21 +20,17 @@
 
 
 ; MUI start ------
-!include "XPUI.nsh"
+!include "MUI2.nsh"
 
 ; MUI Settings
 !define MUI_ABORTWARNING
 !define MUI_ICON "${PROJECT_DIR}\Resources\CompassPilot.ico"
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
 !define MUI_FINISHPAGE_NOAUTOCLOSE
-;!define MUI_FINISHPAGE_SHOWREADME ""
-;!define MUI_FINISHPAGE_SHOWREADME_CHECKED
-;!define MUI_FINISHPAGE_SHOWREADME_TEXT "Create Desktop Shortcut"
-;!define MUI_FINISHPAGE_SHOWREADME_FUNCTION CreatePilotDesktopShortcut
-!define XPUI_FINISHPAGE_DOCS ""
-!define XPUI_FINISHPAGE_CHECKBOX_DOCS "Create Desktop Shortcut"
-!define XPUI_FINISHPAGE_DOCS_FUNCTION CreatePilotDesktopShortcut
-;!define XPUI_FINISHPAGE_DOCS_NOTCHECKED
+!define MUI_FINISHPAGE_SHOWREADME ""
+!define MUI_FINISHPAGE_SHOWREADME_CHECKED
+!define MUI_FINISHPAGE_SHOWREADME_TEXT "Create Desktop Shortcut"
+!define MUI_FINISHPAGE_SHOWREADME_FUNCTION CreatePilotDesktopShortcut
 
 
 

@@ -1,4 +1,0 @@
-[Settings]
-CompassClickOnceProtocol=http://
-CompassClickOnceURL=appserver01/compassframework/compassapi.application
-CompassPrintServer=printserver01

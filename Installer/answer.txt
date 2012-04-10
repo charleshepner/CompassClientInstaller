@@ -1,0 +1,4 @@
+[Settings]
+CompassClickOnceProtocol=https://
+CompassClickOnceURL=kyleserver/compassframework/compassapi.application
+CompassPrintServer=kzprintserver01
