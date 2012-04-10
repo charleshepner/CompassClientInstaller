@@ -77,6 +77,29 @@ Var hCtl_customsettings_Label2
 !include "x64.nsh"
 !include "nsDialogs.nsh"
 
+;FileExists is already part of LogicLib, but returns true for directories as well as files
+!macro _FileExists2 _a _b _t _f
+	!insertmacro _LOGICLIB_TEMP
+	StrCpy $_LOGICLIB_TEMP "0"
+	StrCmp `${_b}` `` +4 0 ;if path is not blank, continue to next check
+	IfFileExists `${_b}` `0` +3 ;if path exists, continue to next check (IfFileExists returns true if this is a directory)
+	IfFileExists `${_b}\*.*` +2 0 ;if path is not a directory, continue to confirm exists
+	StrCpy $_LOGICLIB_TEMP "1" ;file exists
+	;now we have a definitive value - the file exists or it does not
+	StrCmp $_LOGICLIB_TEMP "1" `${_t}` `${_f}`
+!macroend
+!undef FileExists
+!define FileExists `"" FileExists2`
+!macro _DirExists _a _b _t _f
+	!insertmacro _LOGICLIB_TEMP
+	StrCpy $_LOGICLIB_TEMP "0"
+	StrCmp `${_b}` `` +3 0 ;if path is not blank, continue to next check
+	IfFileExists `${_b}\*.*` 0 +2 ;if directory exists, continue to confirm exists
+	StrCpy $_LOGICLIB_TEMP "1"
+	StrCmp $_LOGICLIB_TEMP "1" `${_t}` `${_f}`
+!macroend
+!define DirExists `"" DirExists`
+
 
 ; Defines ------
 ; Define variables here
@@ -109,11 +132,39 @@ ShowInstDetails show
 ShowUnInstDetails show
 RequestExecutionLevel admin
 
+Function .onInit
+  SetShellVarContext all
+
+  Var /global AnswerFileExists
+  Var /global ClickOnceServer
+  Var /global CompassPilotURL
+  Var /global PrintServer
+
+  ${If} ${FileExists} "$EXEDIR\answer.txt"
+    ReadIniStr $ClickOnceServer "$EXEDIR\answer.txt" "Settings" "ClickOnceServer"
+    ReadIniStr $CompassPilotURL "$EXEDIR\answer.txt" "Settings" "CompassPilotURL"
+    ReadIniStr $PrintServer "$EXEDIR\answer.txt" "Settings" "PrintServer"
+    StrCpy "$AnswerFileExists" "True"
+  ${Else}
+    StrCpy "$AnswerFileExists" "False"
+    StrCpy "$CompassPilotURL" "${PILOT_LAUNCH_URL}"
+    StrCpy "$PrintServer" "${PORT_HOST_ADDRESS}"
+  ${EndIf}
+FunctionEnd
+
 Section "MainSection" SEC01
 
   Var /global DLL_INSTALL_PATH
 
   LogSet on
+  
+  ${If} "$AnswerFileExists" == "True"
+    DetailPrint "Answer file found. Using these answers:"
+    DetailPrint "CompassPilotURL: $CompassPilotURL"
+    DetailPrint "PrintServer: $PrintServer"
+  ${Else}
+    DetailPrint "No answer file found."
+  ${EndIf}
 
   !insertmacro CheckNetFramework 40Full
 
@@ -128,7 +179,7 @@ Section "MainSection" SEC01
   ${If} ${IsWinXP}
     DetailPrint "Windows XP detected."
     DetailPrint "Installing Tifconvert Printer Port."
-    nsExec::Exec 'cscript C:\Windows\System32\prnport.vbs -a -r ${TIFCONVERT_PORT_NAME} -h ${PORT_HOST_ADDRESS} -q ${TIFCONVERT_PORT_QUEUE} -o lpr -n 515 -2e -md'
+    nsExec::Exec 'cscript C:\Windows\System32\prnport.vbs -a -r ${TIFCONVERT_PORT_NAME} -h $PrintServer -q ${TIFCONVERT_PORT_QUEUE} -o lpr -n 515 -2e -md'
     DetailPrint "Installing Tifconvert Printer."
     nsExec::Exec 'cscript C:\Windows\System32\prnmngr.vbs -a -p "${TIFCONVERT_PRINTER_NAME}" -m "${PRINTER_DRIVER32}" -r "${TIFCONVERT_PORT_NAME}"'
   ${EndIf}
@@ -136,7 +187,7 @@ Section "MainSection" SEC01
   ${If} ${IsWin7}
     DetailPrint "Windows 7 detected."
     DetailPrint "Installing Tifconvert Printer Port."
-    nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnport.vbs -a -r ${TIFCONVERT_PORT_NAME} -h ${PORT_HOST_ADDRESS} -q ${TIFCONVERT_PORT_QUEUE} -o lpr -n 515 -2e -md'
+    nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnport.vbs -a -r ${TIFCONVERT_PORT_NAME} -h $PrintServer -q ${TIFCONVERT_PORT_QUEUE} -o lpr -n 515 -2e -md'
     DetailPrint "Installing Tifconvert Printer."
     nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnmngr.vbs -a -p "${TIFCONVERT_PRINTER_NAME}" -m "${PRINTER_DRIVER64}" -r "${TIFCONVERT_PORT_NAME}"'
   ${EndIf}
@@ -155,8 +206,8 @@ SectionEnd
 
 Section -AdditionalIcons
   CreateDirectory "$SMPROGRAMS\Compass Pilot"
-  !insertmacro CreateInternetShortcut "$SMPROGRAMS\Compass Pilot\Compass Pilot" "${PILOT_LAUNCH_URL}" "$INSTDIR\CompassPilot.ico" "0"
-  !insertmacro CreateInternetShortcut "$SMPROGRAMS\Compass Pilot\Northwoods Website" "http://www.teamnorthwoods.com" "" "0"
+  !insertmacro CreateInternetShortcut "$SMPROGRAMS\Compass Pilot\Compass Pilot" "$CompassPilotURL" "$INSTDIR\CompassPilot.ico" "0"
+  !insertmacro CreateInternetShortcut "$SMPROGRAMS\Compass Pilot\Northwoods Website" "${PRODUCT_WEB_SITE}" "" "0"
   ;CreateShortCut "$SMPROGRAMS\Compass Pilot\Uninstall.lnk" "$INSTDIR\uninst.exe"
 SectionEnd
 
@@ -172,10 +223,6 @@ Section -Post
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\CompassPilot.ico"
   WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "EstimatedSize" 340
 SectionEnd
-
-Function .onInit
-  SetShellVarContext all
-FunctionEnd
 
 
 ; dialog create function
@@ -242,7 +289,7 @@ FunctionEnd
 
 
 Function CreatePilotDesktopShortcut
-  !insertmacro CreateInternetShortcut "$DESKTOP\Compass Pilot" "${PILOT_LAUNCH_URL}" "$INSTDIR\CompassPilot.ico" "0"
+  !insertmacro CreateInternetShortcut "$DESKTOP\Compass Pilot" "$CompassPilotURL" "$INSTDIR\CompassPilot.ico" "0"
 FunctionEnd
 
 Function un.onUninstSuccess

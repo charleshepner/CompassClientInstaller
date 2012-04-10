@@ -1,0 +1,4 @@
+[Settings]
+ClickOnceServer=ec2-21-21-24-56
+CompassPilotURL=pilotpilotpilot
+PrintServer=printprintprint
