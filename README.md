@@ -38,6 +38,9 @@ The files written to the installation location at this time are the Compass Pilo
 
 Three customizable settings appear after the install location is chosen.
 
+## Silent/Unattended Install
+
+
 
 ## Developing
 
