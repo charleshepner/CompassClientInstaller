@@ -7,7 +7,7 @@
 !define PROJECT_DIR "C:\Users\chepner\Git\CompassClientInstaller"
 
 ; HM NIS Edit Wizard helper defines
-!define PRODUCT_NAME "Compass Client-Side Components"
+!define PRODUCT_NAME "Compass Client Components"
 !define PRODUCT_VERSION "2012-04.09"
 !define PRODUCT_PUBLISHER "Northwoods"
 !define PRODUCT_WEB_SITE "http://www.teamnorthwoods.com"
@@ -45,13 +45,11 @@ Var hCtl_customsettings
 Var hCtl_customsettings_GroupBox1
 Var hCtl_customsettings_TextBox1
 Var hCtl_customsettings_DropList1
-Var hCtl_customsettings_Label3
-Var hCtl_customsettings_Label4
 Var hCtl_customsettings_GroupBox2
 Var hCtl_customsettings_TextBox2
 Var hCtl_customsettings_Label1
 Var hCtl_customsettings_Label2
-;Page custom fnc_customsettings_Show
+Page custom fnc_customsettings_Show
 ; Instfiles page
 !insertmacro MUI_PAGE_INSTFILES
 ; Finish page
@@ -72,10 +70,10 @@ Var hCtl_customsettings_Label2
 !addplugindir "${PROJECT_DIR}\Plugins"
 !addincludedir "${PROJECT_DIR}\Include"
 !include "LogicLib.nsh"
-!include "DotNetChecker.nsh"
 !include "WinVer.nsh"
 !include "x64.nsh"
 !include "nsDialogs.nsh"
+!include "DotNetChecker.nsh"
 
 ;FileExists is already part of LogicLib, but returns true for directories as well as files
 !macro _FileExists2 _a _b _t _f
@@ -114,8 +112,10 @@ Var hCtl_customsettings_Label2
 !define TIFCONVERT_PRINTER_NAME "Tifconvert"
 !define TIFCONVERT_PORT_NAME "TifconvertPrinterPort"
 !define TIFCONVERT_PORT_QUEUE "tifconvert"
-!define PORT_HOST_ADDRESS "ec2-23-21-113-174.compute-1.amazonaws.com"
-!define PILOT_LAUNCH_URL "http://ec2-23-21-113-174.compute-1.amazonaws.com/compassframework/compassapi.application"
+!define COMPASS_CLICKONCE_PROTOCOL "http://"
+!define COMPASS_CLICKONCE_URL "[CompassClickOnceServer]/compassframework/compassapi.application"
+!define COMPASS_PRINT_SERVER "[CompassPrintServer]"
+
 
 
 !macro CreateInternetShortcut FILENAME URL ICONFILE ICONINDEX
@@ -125,6 +125,7 @@ WriteINIStr "${FILENAME}.url" "InternetShortcut" "IconIndex" "${ICONINDEX}"
 !macroend
 
 
+
 Name "${PRODUCT_NAME}"
 OutFile "Installer\${PRODUCT_NAME} Setup.exe"
 InstallDir "$PROGRAMFILES\Northwoods\Compass"
@@ -132,25 +133,30 @@ ShowInstDetails show
 ShowUnInstDetails show
 RequestExecutionLevel admin
 
+
+
 Function .onInit
   SetShellVarContext all
 
   Var /global AnswerFileExists
-  Var /global ClickOnceServer
-  Var /global CompassPilotURL
-  Var /global PrintServer
+  Var /global CompassClickOnceProtocol
+  Var /global CompassClickOnceURL
+  Var /global CompassPrintServer
 
   ${If} ${FileExists} "$EXEDIR\answer.txt"
-    ReadIniStr $ClickOnceServer "$EXEDIR\answer.txt" "Settings" "ClickOnceServer"
-    ReadIniStr $CompassPilotURL "$EXEDIR\answer.txt" "Settings" "CompassPilotURL"
-    ReadIniStr $PrintServer "$EXEDIR\answer.txt" "Settings" "PrintServer"
     StrCpy "$AnswerFileExists" "True"
+    ReadIniStr $CompassClickOnceProtocol "$EXEDIR\answer.txt" "Settings" "CompassClickOnceProtocol"
+    ReadIniStr $CompassClickOnceURL "$EXEDIR\answer.txt" "Settings" "CompassClickOnceURL"
+    ReadIniStr $CompassPrintServer "$EXEDIR\answer.txt" "Settings" "CompassPrintServer"
   ${Else}
     StrCpy "$AnswerFileExists" "False"
-    StrCpy "$CompassPilotURL" "${PILOT_LAUNCH_URL}"
-    StrCpy "$PrintServer" "${PORT_HOST_ADDRESS}"
+    StrCPy "$CompassClickOnceProtocol" "${COMPASS_CLICKONCE_PROTOCOL}"
+    StrCpy "$CompassClickOnceURL" "${COMPASS_CLICKONCE_URL}"
+    StrCpy "$CompassPrintServer" "${COMPASS_PRINT_SERVER}"
   ${EndIf}
 FunctionEnd
+
+
 
 Section "MainSection" SEC01
 
@@ -159,9 +165,10 @@ Section "MainSection" SEC01
   LogSet on
   
   ${If} "$AnswerFileExists" == "True"
-    DetailPrint "Answer file found. Using these answers:"
-    DetailPrint "CompassPilotURL: $CompassPilotURL"
-    DetailPrint "PrintServer: $PrintServer"
+    DetailPrint "Answer file found. Using the following answers:"
+    DetailPrint "Answer file - CompassClickOnceProtocol: $CompassClickOnceProtocol"
+    DetailPrint "Answer file - CompassClickOnceURL: $CompassClickOnceURL"
+    DetailPrint "Answer file - CompassPrintServer: $CompassPrintServer"
   ${Else}
     DetailPrint "No answer file found."
   ${EndIf}
@@ -179,7 +186,7 @@ Section "MainSection" SEC01
   ${If} ${IsWinXP}
     DetailPrint "Windows XP detected."
     DetailPrint "Installing Tifconvert Printer Port."
-    nsExec::Exec 'cscript C:\Windows\System32\prnport.vbs -a -r ${TIFCONVERT_PORT_NAME} -h $PrintServer -q ${TIFCONVERT_PORT_QUEUE} -o lpr -n 515 -2e -md'
+    nsExec::Exec 'cscript C:\Windows\System32\prnport.vbs -a -r ${TIFCONVERT_PORT_NAME} -h $CompassPrintServer -q ${TIFCONVERT_PORT_QUEUE} -o lpr -n 515 -2e -md'
     DetailPrint "Installing Tifconvert Printer."
     nsExec::Exec 'cscript C:\Windows\System32\prnmngr.vbs -a -p "${TIFCONVERT_PRINTER_NAME}" -m "${PRINTER_DRIVER32}" -r "${TIFCONVERT_PORT_NAME}"'
   ${EndIf}
@@ -187,7 +194,7 @@ Section "MainSection" SEC01
   ${If} ${IsWin7}
     DetailPrint "Windows 7 detected."
     DetailPrint "Installing Tifconvert Printer Port."
-    nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnport.vbs -a -r ${TIFCONVERT_PORT_NAME} -h $PrintServer -q ${TIFCONVERT_PORT_QUEUE} -o lpr -n 515 -2e -md'
+    nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnport.vbs -a -r ${TIFCONVERT_PORT_NAME} -h $CompassPrintServer -q ${TIFCONVERT_PORT_QUEUE} -o lpr -n 515 -2e -md'
     DetailPrint "Installing Tifconvert Printer."
     nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnmngr.vbs -a -p "${TIFCONVERT_PRINTER_NAME}" -m "${PRINTER_DRIVER64}" -r "${TIFCONVERT_PORT_NAME}"'
   ${EndIf}
@@ -206,7 +213,7 @@ SectionEnd
 
 Section -AdditionalIcons
   CreateDirectory "$SMPROGRAMS\Compass Pilot"
-  !insertmacro CreateInternetShortcut "$SMPROGRAMS\Compass Pilot\Compass Pilot" "$CompassPilotURL" "$INSTDIR\CompassPilot.ico" "0"
+  !insertmacro CreateInternetShortcut "$SMPROGRAMS\Compass Pilot\Compass Pilot" "$CompassClickOnceProtocol$CompassClickOnceURL" "$INSTDIR\CompassPilot.ico" "0"
   !insertmacro CreateInternetShortcut "$SMPROGRAMS\Compass Pilot\Northwoods Website" "${PRODUCT_WEB_SITE}" "" "0"
   ;CreateShortCut "$SMPROGRAMS\Compass Pilot\Uninstall.lnk" "$INSTDIR\uninst.exe"
 SectionEnd
@@ -234,39 +241,37 @@ Function fnc_customsettings_Create
   ${If} $hCtl_customsettings == error
     Abort
   ${EndIf}
-  !insertmacro MUI_HEADER_TEXT "Set Compass Settings" "Configure the Compass Pilot launch URL and print server name"
+  !insertmacro MUI_HEADER_TEXT "Set Compass Client Components Settings" "Configure the ClickOnce URL for Compass Pilot and the print server name"
 
   ; === GroupBox1 (type: GroupBox) ===
   ${NSD_CreateGroupBox} 8u 25u 280u 29u "Compass Launch URL"
   Pop $hCtl_customsettings_GroupBox1
 
   ; === TextBox1 (type: Text) ===
-  ${NSD_CreateText} 58u 36u 72u 11u ""
+  ${NSD_CreateText} 56u 35u 227u 11u "$CompassClickOnceURL"
   Pop $hCtl_customsettings_TextBox1
+  
+  ${NSD_OnChange} $hCtl_customsettings_TextBox1 nsDialogsTextBox1
 
   ; === DropList1 (type: DropList) ===
-  ${NSD_CreateDropList} 12u 35u 30u 12u ""
+  ${NSD_CreateDropList} 12u 35u 40u 12u ""
   Pop $hCtl_customsettings_DropList1
   SetCtlColors $hCtl_customsettings_DropList1 0x000000 0xFFFFFF
-  ${NSD_CB_AddString} $hCtl_customsettings_DropList1 "http"
-  ${NSD_CB_AddString} $hCtl_customsettings_DropList1 "https"
-  ${NSD_CB_SelectString} $hCtl_customsettings_DropList1 "http"
+  ${NSD_CB_AddString} $hCtl_customsettings_DropList1 "http://"
+  ${NSD_CB_AddString} $hCtl_customsettings_DropList1 "https://"
+  ${NSD_CB_SelectString} $hCtl_customsettings_DropList1 "$CompassClickOnceProtocol"
 
-  ; === Label3 (type: Label) ===
-  ${NSD_CreateLabel} 46u 38u 14u 10u "://"
-  Pop $hCtl_customsettings_Label3
-
-  ; === Label4 (type: Label) ===
-  ${NSD_CreateLabel} 133u 37u 150u 13u "/compassframework/compassapi.application"
-  Pop $hCtl_customsettings_Label4
+  ${NSD_OnChange} $hCtl_customsettings_DropList1 nsDialogsDropList1
 
   ; === GroupBox2 (type: GroupBox) ===
   ${NSD_CreateGroupBox} 8u 73u 280u 28u "Print Server Name"
   Pop $hCtl_customsettings_GroupBox2
 
   ; === TextBox2 (type: Text) ===
-  ${NSD_CreateText} 12u 84u 106u 11u ""
+  ${NSD_CreateText} 12u 84u 271u 11u "$CompassPrintServer"
   Pop $hCtl_customsettings_TextBox2
+  
+  ${NSD_OnChange} $hCtl_customsettings_TextBox2 nsDialogsTextBox2
 
   ; === Label1 (type: Label) ===
   ${NSD_CreateLabel} 8u 5u 280u 19u "Enter the URL from which Compass Pilot will be launched.  Either http or https can be chosen depending on how the server is configured."
@@ -275,8 +280,8 @@ Function fnc_customsettings_Create
   ; === Label2 (type: Label) ===
   ${NSD_CreateLabel} 12u 61u 275u 10u "Enter the network name of the print server."
   Pop $hCtl_customsettings_Label2
-
 FunctionEnd
+
 
 
 ; dialog show function
@@ -287,20 +292,49 @@ FunctionEnd
 
 
 
+Function nsDialogsDropList1
+	Pop $1
+    ${NSD_GetText} $hCtl_customsettings_DropList1 $CompassClickOnceProtocol
+    ;MessageBox MB_OK $CompassClickOnceProtocol
+FunctionEnd
+
+
+
+Function nsDialogsTextBox1
+	Pop $1
+	${NSD_GetText} $hCtl_customsettings_TextBox1 $CompassClickOnceURL
+FunctionEnd
+
+
+
+Function nsDialogsTextBox2
+	Pop $1
+	${NSD_GetText} $hCtl_customsettings_TextBox2 $CompassPrintServer
+FunctionEnd
+
+
 
 Function CreatePilotDesktopShortcut
-  !insertmacro CreateInternetShortcut "$DESKTOP\Compass Pilot" "$CompassPilotURL" "$INSTDIR\CompassPilot.ico" "0"
+MessageBox MB_OK $CompassClickOnceProtocol
+MessageBox MB_OK $CompassClickOnceURL
+  !insertmacro CreateInternetShortcut "$DESKTOP\Compass Pilot" "$CompassClickOnceProtocol$CompassClickOnceURL" "$INSTDIR\CompassPilot.ico" "0"
 FunctionEnd
+
+
 
 Function un.onUninstSuccess
   HideWindow
   MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) was successfully removed from your computer."
 FunctionEnd
 
+
+
 Function un.onInit
   MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Are you sure you want to completely remove $(^Name) and all of its components?" IDYES +2
   Abort
 FunctionEnd
+
+
 
 Section Uninstall
   SetShellVarContext all
