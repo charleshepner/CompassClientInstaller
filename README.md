@@ -65,7 +65,7 @@ A NSIS editor is not required but helps a lot.  HM NIS Edit from HMSoft has work
 First steps:
 
 * Get a copy of the code from github.com (https://github.com/charleshepner/CompassClientInstaller/)
-  *`git clone git@github.com:charleshepner/CompassClientInstaller.git` or fork the code
+  * `git clone git@github.com:charleshepner/CompassClientInstaller.git` or fork the code
   * Root folder contains a README (this file), a TODO list, and Compass Pilot.nsi (the script that compiles into the installer)
   * Include folder contains any header files not distributed with a default NSIS install
   * Installer folder contains the installer executable
@@ -73,3 +73,21 @@ First steps:
   * Resources folder contains files deployed by the installer
 * Open Compass Pilot.nsi and set the PROJECT_DIR at the top to the folder you checked out the code into
 * You should be able to compile the installer at this point!
+
+Developer notes:
+
+* 64-bit detection is from the built in header x64.nsh
+	${If} ${RunningX64}
+* OS version detection is from the built in header WinVer.nsh
+	${If} ${IsWinXP}
+	${If} ${IsWin7}
+* LogicLib header is being used for conditionals and loops with a custom macro for file and directory testing
+	${If} ${FileExists} "C:\mysamplefile.txt"
+	
+	${Else}
+	
+	${EndIf}
+* .NET version detection from a third-party header DotNetChecker.nsh provising download and install of the required version.  I made some custom changes to the DotNetChecker.nsh file to prevent the user from continuing with the install if they canceled out of the dialog prompted them to install .NET.
+	!insertmacro CheckNetFramework 40Full
+* A macro is being used to create Internet shortcuts
+	!insertmacro CreateInternetShortcut "path_to_new_shortcut" "URL" "path_to_icon" "0"

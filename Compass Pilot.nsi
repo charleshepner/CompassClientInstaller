@@ -39,8 +39,7 @@
 ;!insertmacro MUI_PAGE_LICENSE "${PROJECT_DIR}\license.txt"
 ; Directory page
 !insertmacro MUI_PAGE_DIRECTORY
-;Custom settings page
-; handle variables
+;handle variables
 Var hCtl_customsettings
 Var hCtl_customsettings_GroupBox1
 Var hCtl_customsettings_TextBox1
@@ -49,6 +48,7 @@ Var hCtl_customsettings_GroupBox2
 Var hCtl_customsettings_TextBox2
 Var hCtl_customsettings_Label1
 Var hCtl_customsettings_Label2
+;Custom settings page
 Page custom fnc_customsettings_Show
 ; Instfiles page
 !insertmacro MUI_PAGE_INSTFILES
@@ -159,7 +159,6 @@ FunctionEnd
 
 
 Section "MainSection" SEC01
-
   Var /global DLL_INSTALL_PATH
 
   LogSet on
@@ -208,15 +207,17 @@ Section "MainSection" SEC01
   
   IfSilent 0 +2
     Call CreatePilotDesktopShortcut
-
 SectionEnd
+
+
 
 Section -AdditionalIcons
   CreateDirectory "$SMPROGRAMS\Compass Pilot"
   !insertmacro CreateInternetShortcut "$SMPROGRAMS\Compass Pilot\Compass Pilot" "$CompassClickOnceProtocol$CompassClickOnceURL" "$INSTDIR\CompassPilot.ico" "0"
   !insertmacro CreateInternetShortcut "$SMPROGRAMS\Compass Pilot\Northwoods Website" "${PRODUCT_WEB_SITE}" "" "0"
-  ;CreateShortCut "$SMPROGRAMS\Compass Pilot\Uninstall.lnk" "$INSTDIR\uninst.exe"
 SectionEnd
+
+
 
 Section -Post
   WriteUninstaller "$INSTDIR\uninst.exe"
@@ -232,6 +233,7 @@ Section -Post
 SectionEnd
 
 
+
 ; dialog create function
 Function fnc_customsettings_Create
 
@@ -241,7 +243,7 @@ Function fnc_customsettings_Create
   ${If} $hCtl_customsettings == error
     Abort
   ${EndIf}
-  !insertmacro MUI_HEADER_TEXT "Set Compass Client Components Settings" "Configure the ClickOnce URL for Compass Pilot and the print server name"
+  !insertmacro MUI_HEADER_TEXT "Set Compass Client Components Settings" "Configure the ClickOnce URL for Compass Pilot and the Print Server name"
 
   ; === GroupBox1 (type: GroupBox) ===
   ${NSD_CreateGroupBox} 8u 25u 280u 29u "Compass Launch URL"
@@ -352,7 +354,6 @@ Section Uninstall
   Delete "$DLL_INSTALL_PATH\Ltbar7r15u.dll"
   
   ;START TIFCONVERT PRINTER UNINSTALL
-
   ${If} ${IsWinXP}
     DetailPrint "Uninstalling Windows XP Tifconvert"
     nsExec::Exec 'cscript C:\Windows\System32\prnport.vbs -d -r ${TIFCONVERT_PORT_NAME}'
@@ -364,11 +365,9 @@ Section Uninstall
     nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnport.vbs -d -r ${TIFCONVERT_PORT_NAME}'
     nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnmngr.vbs -d -p ${TIFCONVERT_PRINTER_NAME}'
   ${EndIf}
-
   ;END TIFCONVERT PRINTER UNINSTALL
 
   Delete "$DESKTOP\Compass Pilot.url"
-  ;Delete "$SMPROGRAMS\Compass Pilot\Uninstall.lnk"
   Delete "$SMPROGRAMS\Compass Pilot\Compass Pilot.url"
   Delete "$SMPROGRAMS\Compass Pilot\Northwoods Website.url"
 
