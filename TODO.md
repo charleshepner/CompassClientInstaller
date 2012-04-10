@@ -17,6 +17,7 @@ TODO
 * *Added 4/9/2012* Add custom page to set Pilot launch URL and print server name **Completed 4/10/2012**
 * *Added 4/10/2012* Add documentation for developers wanting to modify this installer
 * *Added 4/10/2012* Add documentation for use of installer including silent mode and answer file
+* *Added 4/10/2012* Add further comments to the source code
 
 ## Low Priority
 

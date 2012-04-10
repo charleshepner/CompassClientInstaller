@@ -18,7 +18,27 @@ This installer deploys the client-side components needed to launch and run Compa
 * OS detection for paths that differ between Windowx XP and Windows Vista/7
 * .NET detection (downloads and installs .NET 4.0 Extended Profile if not present)
 * Uninstaller provided can be run from Add/Remove Programs or Programs and Features
+* Silent install mode (/S on command-line)
+* Answer file (answer.txt) to provide configuration (if run silently)
 
-## Notes
+## Usage
+
+This installer can be run interactively just by launching the executable.  It requires administrative privileges. 
+
+_Choose Install Location Page_
+
+Installation files will be written by default to:
+
+* C:\Program Files\Northwoods\Compass Client Components -- on 32-bit machines
+* C:\Program Files (x86)\Northwoods\Compass Client Components -- on 64-bit machines
+
+The files written to the installation location at this time are the Compass Pilot icon, the install log, and the uninstaller executable.
+
+_Set Compass Client Components Settings Page_
+
+Three customizable settings appear after the install location is chosen.
+
+
+## Developing
 
 The installer is built using NSIS 2.46.  In order to enable logging support, the advanced logging build was used (located here http://nsis.sourceforge.net/Special_Builds).
