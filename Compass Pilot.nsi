@@ -147,6 +147,9 @@ Section "MainSection" SEC01
   File "${PROJECT_DIR}\Resources\Ltbar7w15u.dll"
   SetOutPath "$INSTDIR"
   File "${PROJECT_DIR}\Resources\CompassPilot.ico"
+  
+  IfSilent 0 +2
+    Call CreatePilotDesktopShortcut
 
 SectionEnd
 
