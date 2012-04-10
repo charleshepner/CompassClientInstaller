@@ -23,7 +23,7 @@ This installer deploys the client-side components needed to launch and run Compa
 
 ## Usage
 
-This installer can be run interactively just by launching the executable.  It requires administrative privileges. 
+This installer can be run interactively just by launching the executable.  It requires administrative privileges. Installation actions are logged to install.log in the installation directory.
 
 **Choose Install Location Page**
 
@@ -38,10 +38,38 @@ The files written to the installation location at this time are the Compass Pilo
 
 Three customizable settings appear after the install location is chosen.
 
+* The protocol used to download the Compass ClickOnce client (default http://)
+* The URL used to download the Compass ClickOnce client (default [CompassClickOnceServer]/compassframework/compassapi.application)
+* The network name of the print server for the Compass solution (default [CompassPrintServer])
+
+The Compass ClickOnce client can be delivered over http or https, selectable from a drop-down (the server must be configured appropriately for https).  For URL used to download the Compass ClickOnce client, the text [CompassClickOnceServer] should be replaced by the network or DNS name of the server where the Compass ClickOnce Client will be deployed from (e.g. server01).  This URL is used for the Compass Client shortcuts placed on the desktop and in the Start Menu. Finally, the text [CompassPrintServer] should be replaced by the network or DNS name of the server where print jobs should be sent.  This server name is used when the local printers are created.
+
+**Finish Page**
+
+The user can choose whether or not to create a desktop shorcut (selected by default).
+
 ## Silent/Unattended Install
 
 
 
 ## Developing
 
-The installer is built using NSIS 2.46.  In order to enable logging support, the advanced logging build was used (located here http://nsis.sourceforge.net/Special_Builds).
+In order to develop this installer, see the following pre-requisites:
+
+* NSIS 2.46 (install from http://nsis.sourceforge.net/Download)
+* A copy of the NSIS compiler (makensis.exe) with logging support (install from http://nsis.sourceforge.net/Special_Builds)
+* A copy of ExperienceUI 1.3.2 (http://experienceui.enanocms.org/experienceui/download)
+
+A NSIS editor is not required but helps a lot.  HM NIS Edit from HMSoft has worked well for me (http://hmne.sourceforge.net/).  Also note that Notepad++ has built-in syntax higlighting for .nsi and .nsh files (Language > N > NSIS).  Finally, NSIS Dialog Designer by Coolsoft has been invaluable for creating any custom pages in the setup wizard (http://coolsoft.altervista.org/en/nsisdialogdesigner).
+
+First steps:
+
+* Get a copy of the code from github.com (https://github.com/charleshepner/CompassClientInstaller/)
+** `git clone git@github.com:charleshepner/CompassClientInstaller.git` or fork the code
+** Root folder contains a README (this file), a TODO list, and Compass Pilot.nsi (the script that compiles into the installer)
+** Include folder contains any header files not distributed with a default NSIS install
+** Installer folder contains the installer executable
+** Plugins folder contains any dll files not distributed with a default NSIS install
+** Resources folder contains files deployed by the installer
+* Open Compass Pilot.nsi and set the PROJECT_DIR at the top to the folder you checked out the code into
+* You should be able to compile the installer at this point!

@@ -1,4 +1,0 @@
-[Settings]
-CompassClickOnceProtocol=https://
-CompassClickOnceURL=pilotpilotpilot
-CompassPrintServer=printprintprint
