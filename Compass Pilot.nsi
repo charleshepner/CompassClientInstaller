@@ -36,6 +36,8 @@
 !define XPUI_FINISHPAGE_DOCS_FUNCTION CreatePilotDesktopShortcut
 ;!define XPUI_FINISHPAGE_DOCS_NOTCHECKED
 
+
+
 ; Welcome page
 !insertmacro MUI_PAGE_WELCOME
 ; License page
