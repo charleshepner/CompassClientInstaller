@@ -34,6 +34,7 @@
 	${EndIf}
 	
 	DetailPrint "Checking .NET Framework version..."
+	LogText "Checking .NET Framework version..."
 
 	Push $0
 	Push $1
@@ -49,9 +50,11 @@
 	
 	${If} $0 == "false"
 		DetailPrint ".NET Framework $dotNetReadableVersion not found, download is required for program to run."
+		LogText ".NET Framework $dotNetReadableVersion not found, download is required for program to run."
 		Goto NoDotNET
 	${Else}
 		DetailPrint ".NET Framework $dotNetReadableVersion found, no need to install."
+		LogText ".NET Framework $dotNetReadableVersion found, no need to install."
 		Goto NewDotNET
 	${EndIf}
 
@@ -62,8 +65,10 @@ NoDotNET:
 
 DownloadDotNET:
 	DetailPrint "Beginning download of .NET Framework $dotNetReadableVersion."
+	LogText "Beginning download of .NET Framework $dotNetReadableVersion."
 	NSISDL::download $dotNetUrl "$TEMP\dotnetfx.exe"
 	DetailPrint "Completed download."
+	LogText "Completed download."
 
 	Pop $0
 	${If} $0 == "cancel"
@@ -71,21 +76,26 @@ DownloadDotNET:
 		;"Download cancelled.  Continue Installation?" \
 		;IDYES NewDotNET IDNO GiveUpDotNET
 		DetailPrint "Download cancelled."
+		LogText "Download cancelled."
 		goto GiveUpDotNET
 	${ElseIf} $0 != "success"
 		;MessageBox MB_YESNO|MB_ICONEXCLAMATION \
 		;"Download failed:$\r$\n$0$\r$\n$\r$\nContinue Installation?" \
 		;IDYES NewDotNET IDNO GiveUpDotNET
 		DetailPrint "Download failed."
+		LogText "Download failed."
 		goto GiveUpDotNET
 	${EndIf}
 
 	DetailPrint "Pausing installation while downloaded .NET Framework installer runs."
+	LogText "Pausing installation while downloaded .NET Framework installer runs."
 	ExecWait '$TEMP\dotnetfx.exe /q /c:"install /q"'
 
 	DetailPrint "Completed .NET Framework install/update. Removing .NET Framework installer."
+	LogText "Completed .NET Framework install/update. Removing .NET Framework installer."
 	Delete "$TEMP\dotnetfx.exe"
 	DetailPrint ".NET Framework installer removed."
+	LogText ".NET Framework installer removed."
 	goto NewDotNet
 
 GiveUpDotNET:
@@ -93,6 +103,7 @@ GiveUpDotNET:
 
 NewDotNET:
 	DetailPrint "Proceeding with remainder of installation."
+	LogText "Proceeding with remainder of installation."
 	Pop $0
 	Pop $1
 	Pop $2

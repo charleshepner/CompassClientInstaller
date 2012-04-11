@@ -13,7 +13,7 @@ TODO
 ## Medium Priority
 
 * *Added 4/6/2012* Add install log to install directory **Completed 4/9/2012**
-* *Added 4/9/2012* Add more logging via LogText for each DetailPrint
+* *Added 4/9/2012* Add more logging via LogText for each DetailPrint **Completed 4/11/2012**
 * *Added 4/9/2012* Add custom page to set Pilot launch URL and print server name **Completed 4/10/2012**
 * *Added 4/10/2012* Add documentation for developers wanting to modify this installer **Completed 4/10/2012**
 * *Added 4/10/2012* Add documentation for use of installer including silent mode and answer file **Completed 4/10/2012**
