@@ -185,71 +185,54 @@ Section "MainSection" SEC01
 
   LogSet on
   
+  SetOutPath "$INSTDIR"
+  
   ${If} "$AnswerFilePath" == ""
 	DetailPrint "No answer file found."
-	LogText "No answer file found."
   ${ElseIf} "$AnswerFilePath" == "$EXEDIR\${ANSWER_FILE}"
 	DetailPrint "Answer file being used: $AnswerFilePath"
-	LogText "Answer file being used: $AnswerFilePath"
   ${Else}
 	DetailPrint "Answer file being used: $AnswerFilePath"
-	LogText "Answer file being used: $AnswerFilePath"
   ${EndIf}
 
   ${If} "$AnswerFilePath" != ""
     DetailPrint "Answer file - CompassClickOnceProtocol: $CompassClickOnceProtocol"
-    LogText "Answer file - CompassClickOnceProtocol: $CompassClickOnceProtocol"
     DetailPrint "Answer file - CompassClickOnceURL: $CompassClickOnceURL"
-    LogText "Answer file - CompassClickOnceURL: $CompassClickOnceURL"
     DetailPrint "Answer file - CompassPrintServer: $CompassPrintServer"
-    LogText "Answer file - CompassPrintServer: $CompassPrintServer"
   ${EndIf}
 
   !insertmacro CheckNetFramework 40Full
 
   ${If} ${RunningX64}
     DetailPrint "64-bit OS detected."
-    LogText "64-bit OS detected."
     StrCpy $DLL_INSTALL_PATH "$WINDIR\SysWOW64"
   ${Else}
     DetailPrint "32-bit OS detected."
-    LogText "32-bit OS detected."
     StrCpy $DLL_INSTALL_PATH "$WINDIR\System32"
   ${EndIf}
 
   ${If} ${IsWinXP}
     DetailPrint "Windows XP detected."
-    LogText "Windows XP detected."
     DetailPrint "Installing Tifconvert Printer Port."
-    LogText "Installing Tifconvert Printer Port."
     nsExec::Exec 'cscript C:\Windows\System32\prnport.vbs -a -r ${TIFCONVERT_PORT_NAME} -h $CompassPrintServer -q ${TIFCONVERT_PORT_QUEUE} -o lpr -n 515 -2e -md'
     DetailPrint "Installing Tifconvert Printer."
-    LogText "Installing Tifconvert Printer."
     nsExec::Exec 'cscript C:\Windows\System32\prnmngr.vbs -a -p "${TIFCONVERT_PRINTER_NAME}" -m "${PRINTER_DRIVER32}" -r "${TIFCONVERT_PORT_NAME}"'
   ${EndIf}
 
   ${If} ${IsWin7}
     DetailPrint "Windows 7 detected."
-    LogText "Windows 7 detected."
     DetailPrint "Installing Tifconvert Printer Port."
-    LogText "Installing Tifconvert Printer Port."
     nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnport.vbs -a -r ${TIFCONVERT_PORT_NAME} -h $CompassPrintServer -q ${TIFCONVERT_PORT_QUEUE} -o lpr -n 515 -2e -md'
     DetailPrint "Installing Tifconvert Printer."
-    LogText "Installing Tifconvert Printer."
     nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnmngr.vbs -a -p "${TIFCONVERT_PRINTER_NAME}" -m "${PRINTER_DRIVER64}" -r "${TIFCONVERT_PORT_NAME}"'
   ${EndIf}
 
   SetOverwrite ifnewer
   SetOutPath "$DLL_INSTALL_PATH"
-  LogText "SetOutPath: $DLL_INSTALL_PATH"
   File "Resources\Ltbar7r15u.dll"
-  LogText "Copied ..\Ltbar7r15u.dll"
   File "Resources\Ltbar7w15u.dll"
-  LogText "Copied ..\Ltbar7w15u.dll"
   SetOutPath "$INSTDIR"
-  LogText "SetOutPath: $INSTDIR"
   File "Resources\CompassPilot.ico"
-  LogText "Copied ..\CompassPilot.ico"
   
   IfSilent 0 +2
     Call CreatePilotDesktopShortcut
@@ -260,9 +243,7 @@ SectionEnd
 Section -AdditionalIcons
   CreateDirectory "$SMPROGRAMS\Compass Pilot"
   !insertmacro CreateInternetShortcut "$SMPROGRAMS\Compass Pilot\Compass Pilot" "$CompassClickOnceProtocol$CompassClickOnceURL" "$INSTDIR\CompassPilot.ico" "0"
-  LogText "Created Internet shorcut $SMPROGRAMS\Compass Pilot\Compass Pilot"
   !insertmacro CreateInternetShortcut "$SMPROGRAMS\Compass Pilot\Northwoods Website" "${PRODUCT_WEB_SITE}" "" "0"
-  LogText "Created Internet shorcut $SMPROGRAMS\Compass Pilot\Northwoods Website"
 SectionEnd
 
 
