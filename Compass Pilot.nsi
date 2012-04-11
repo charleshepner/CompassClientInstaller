@@ -24,7 +24,7 @@
 
 ; MUI Settings
 !define MUI_ABORTWARNING
-!define MUI_ICON "${PROJECT_DIR}\Resources\CompassPilot.ico"
+!define MUI_ICON "Resources\CompassPilot.ico"
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_FINISHPAGE_SHOWREADME ""
@@ -37,7 +37,7 @@
 ; Welcome page
 !insertmacro MUI_PAGE_WELCOME
 ; License page
-;!insertmacro MUI_PAGE_LICENSE "${PROJECT_DIR}\license.txt"
+;!insertmacro MUI_PAGE_LICENSE "Resources\license.txt"
 ; Directory page
 !insertmacro MUI_PAGE_DIRECTORY
 ;handle variables
@@ -68,8 +68,8 @@ Page custom fnc_customsettings_Show
 
 ; Includes ------
 ; Add includes for any needed header files here
-!addplugindir "${PROJECT_DIR}\Plugins"
-!addincludedir "${PROJECT_DIR}\Include"
+!addplugindir "Plugins"
+!addincludedir "Include"
 !include "LogicLib.nsh"
 !include "WinVer.nsh"
 !include "x64.nsh"
@@ -227,10 +227,10 @@ Section "MainSection" SEC01
 
   SetOverwrite ifnewer
   SetOutPath "$DLL_INSTALL_PATH"
-  File "${PROJECT_DIR}\Resources\Ltbar7r15u.dll"
-  File "${PROJECT_DIR}\Resources\Ltbar7w15u.dll"
+  File "Resources\Ltbar7r15u.dll"
+  File "Resources\Ltbar7w15u.dll"
   SetOutPath "$INSTDIR"
-  File "${PROJECT_DIR}\Resources\CompassPilot.ico"
+  File "Resources\CompassPilot.ico"
   
   IfSilent 0 +2
     Call CreatePilotDesktopShortcut
