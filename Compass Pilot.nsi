@@ -4,7 +4,7 @@
 ; Charles Hepner (chepner@teamnorthwoods.com)
 ; Michael Randall (mrandall@teamnorthwoods.com)
 
-!define PROJECT_DIR "C:\Users\chepner\Git\CompassClientInstaller"
+
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Compass Client Components"

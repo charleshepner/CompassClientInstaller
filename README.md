@@ -84,7 +84,7 @@ First steps:
   * Installer folder contains the installer executable
   * Plugins folder contains any dll files not distributed with a default NSIS install
   * Resources folder contains files deployed by the installer
-* Open Compass Pilot.nsi and set the PROJECT_DIR at the top to the folder you checked out the code into
+* Open Compass Pilot.nsi in HM NIS Edit and press Ctrl-F9
 * You should be able to compile the installer at this point!
 
 Developer notes:
