@@ -18,7 +18,7 @@ TODO
 * *Added 4/10/2012* Add documentation for developers wanting to modify this installer **Completed 4/10/2012**
 * *Added 4/10/2012* Add documentation for use of installer including silent mode and answer file **Completed 4/10/2012**
 * *Added 4/10/2012* Add further comments to the source code
-* *Added 4/10/2012* Merge ExperienceUI into the master branch
+* *Added 4/10/2012* Merge ExperienceUI into the master branch **Denied 4/10/2012 - not possible using nsDialogs for custom pages**
 * *Added 4/10/2012* Detect if Compass Client Components already installed and remove, then install new copy
 * *Added 4/10/2012* Need to clear click once cache when doing an install (mage -cc or dfshim,cleanonlineappcache)
 
@@ -32,3 +32,5 @@ TODO
 * *Added 4/10/2012* Add creation of the Compass Forms printer and control over which printers get created in answer file
 * *Added 4/10/2012* Add creation of Capture Kiosk and Self-scan Kiosk shortcuts and control over them in the answer file
 * *Added 4/10/2012* Add ability to control installation path in the answer file
+* *Added 4/10/2012* Add popup when /? is passed on command-line to show syntax **Completed 4/11/2012**
+* *Added 4/10/2012* Add command-line parameter /ANSWSERFILE= to allow specifying an answer file at an arbitrary path **Completed 4/11/2012**

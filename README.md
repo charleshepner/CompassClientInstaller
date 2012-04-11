@@ -50,7 +50,7 @@ The user can choose whether or not to create a desktop shorcut (selected by defa
 
 ## Silent/Unattended Install
 
-This installer can be run silently just by adding the command-line parameter /S (case-sensitive).  An answer file can be provided so that the installer will know what values to use for the configurable areas in the wizard.  The installer will automatically detect the presence of answer.txt in the same folder as the installer executable and will draw configuration values from it.
+This installer can be run silently just by adding the command-line parameter /S (case-sensitive).  An answer file can be provided so that the installer will know what values to use for the configurable areas in the wizard.  The installer will automatically detect the presence of answer.txt in the same folder as the installer executable and will draw configuration values from it.  Optionally /ANSWERFILE=path can be provide on the command-line to provide a path to an answer file.  If this command-line shortcut is provided it will be used in preference to an answer file in the same directory as the installer executable.
 
 Answer.txt is formatted in the INI file format.  It has one section [Settings].  It has 3 possible key value pairs:
 
@@ -107,3 +107,4 @@ ${EndIf}
 * A macro is being used to create Internet shortcuts
 ```!insertmacro CreateInternetShortcut "path_to_new_shortcut" "URL" "path_to_icon" "0"
 ```
+* The custom page included was built using nsDialogs instead of the older InstallOptions ini files

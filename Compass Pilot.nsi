@@ -8,7 +8,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Compass Client Components"
-!define PRODUCT_VERSION "2012-04.10"
+!define PRODUCT_VERSION "2012-04-11"
 !define PRODUCT_PUBLISHER "Northwoods"
 !define PRODUCT_WEB_SITE "http://www.teamnorthwoods.com"
 !define PRODUCT_HELP_SITE "http://www.teamnorthwoods.com/contact/support-center/"
@@ -74,6 +74,7 @@ Page custom fnc_customsettings_Show
 !include "WinVer.nsh"
 !include "x64.nsh"
 !include "nsDialogs.nsh"
+!include "FileFunc.nsh"
 !include "DotNetChecker.nsh"
 
 ;FileExists is already part of LogicLib, but returns true for directories as well as files
@@ -113,6 +114,7 @@ Page custom fnc_customsettings_Show
 !define TIFCONVERT_PRINTER_NAME "Tifconvert"
 !define TIFCONVERT_PORT_NAME "TifconvertPrinterPort"
 !define TIFCONVERT_PORT_QUEUE "tifconvert"
+!define ANSWER_FILE "answer.txt"
 !define COMPASS_CLICKONCE_PROTOCOL "http://"
 !define COMPASS_CLICKONCE_URL "[CompassClickOnceServer]/compassframework/compassapi.application"
 !define COMPASS_PRINT_SERVER "[CompassPrintServer]"
@@ -133,28 +135,52 @@ InstallDir "$PROGRAMFILES\Northwoods\${PRODUCT_NAME}"
 ShowInstDetails show
 ShowUnInstDetails show
 RequestExecutionLevel admin
+BrandingText "Installer version: ${PRODUCT_VERSION}"
 
 
 
 Function .onInit
   SetShellVarContext all
 
+  Var /global AnswerFilePath
   Var /global AnswerFileExists
   Var /global CompassClickOnceProtocol
   Var /global CompassClickOnceURL
   Var /global CompassPrintServer
 
-  ${If} ${FileExists} "$EXEDIR\answer.txt"
+  ;Show a dialog explaining the command-line parameters if /? is passed
+  ClearErrors
+  ${GetOptions} $cmdLineParams "/?" $R0
+  IfErrors +3 0
+  MessageBox MB_OK "Installs Compass client components$\r$\n$\r$\nCompass Client Components Setup.exe [/S] [/ANSWERFILE=path] $\r$\n$\r$\n\
+  /S		install silently (case sensitive) $\r$\n\
+  /ANSWERFILE	use an answerfile to automate prompts for a silent install $\r$\n\
+  path		absolute or relative path to the location of the answer file"
+  Abort
+  Pop $R0
+
+  ;Get the answerfile path if /ANSWERFILE is passed
+  ClearErrors
+  ${GetOptions} $CMDLINE "/ANSWERFILE=" $AnswerFilePath
+  IfErrors 0 AnswerFileProvided
+  ${If} ${FileExists} "$EXEDIR\${ANSWER_FILE}"
+    StrCpy "$AnswerFilePath" "$EXEDIR\${ANSWER_FILE}"
+  ${EndIf}
+
+  AnswerFileProvided:
+  ${If} ${FileExists} "$AnswerFilePath"
     StrCpy "$AnswerFileExists" "True"
-    ReadIniStr $CompassClickOnceProtocol "$EXEDIR\answer.txt" "Settings" "CompassClickOnceProtocol"
-    ReadIniStr $CompassClickOnceURL "$EXEDIR\answer.txt" "Settings" "CompassClickOnceURL"
-    ReadIniStr $CompassPrintServer "$EXEDIR\answer.txt" "Settings" "CompassPrintServer"
+    ReadIniStr $CompassClickOnceProtocol "$AnswerFilePath" "Settings" "CompassClickOnceProtocol"
+    ReadIniStr $CompassClickOnceURL "$AnswerFilePath" "Settings" "CompassClickOnceURL"
+    ReadIniStr $CompassPrintServer "$AnswerFilePath" "Settings" "CompassPrintServer"
   ${Else}
     StrCpy "$AnswerFileExists" "False"
     StrCPy "$CompassClickOnceProtocol" "${COMPASS_CLICKONCE_PROTOCOL}"
     StrCpy "$CompassClickOnceURL" "${COMPASS_CLICKONCE_URL}"
     StrCpy "$CompassPrintServer" "${COMPASS_PRINT_SERVER}"
   ${EndIf}
+  
+   MessageBox MB_OK $AnswerFilePath
 FunctionEnd
 
 
@@ -298,7 +324,6 @@ FunctionEnd
 Function nsDialogsDropList1
 	Pop $1
     ${NSD_GetText} $hCtl_customsettings_DropList1 $CompassClickOnceProtocol
-    ;MessageBox MB_OK $CompassClickOnceProtocol
 FunctionEnd
 
 
