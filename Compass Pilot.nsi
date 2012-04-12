@@ -160,6 +160,21 @@ BrandingText "Installer version: ${PRODUCT_VERSION}"
 
 ; This function is called immediately before the Welcome page appears
 Function .onInit
+  Var /global UninstallerPath
+  ; Check the registry to see if Compass Client Components is already installed
+  ReadRegStr $UninstallerPath ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString"
+  
+  ; If there is no path to the uninstaller in the registry, Compass Client Components is not installed, so do nothing
+  ${If} $UninstallerPath == ""
+	; Do nothing
+  ${Else}
+	MessageBox MB_ICONQUESTION|MB_OKCANCEL "Compass Client Components is already installed. Click OK to uninstall the version currently installed \
+	or Cancel to abort this installation." /SD IDOK IDOK +2
+	Abort
+	; Uninstall the previous version
+	nsExec::Exec "$UninstallerPath /S"
+  ${EndIf}
+
   ; Sets the context of variables such as $DESKTOP to the all users desktop, instead of the current user's desktop
   SetShellVarContext all
 
@@ -408,14 +423,14 @@ FunctionEnd
 ; Called after the uninstaller completes successfully
 Function un.onUninstSuccess
   HideWindow
-  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) was successfully removed from your computer."
+  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) was successfully removed from your computer." /SD IDOK
 FunctionEnd
 
 
 
 ; Called immediately before before the uninstaller appears
 Function un.onInit
-  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Are you sure you want to completely remove $(^Name) and all of its components?" IDYES +2
+  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Are you sure you want to completely remove $(^Name) and all of its components?" /SD IDYES IDYES +2
   Abort
 FunctionEnd
 

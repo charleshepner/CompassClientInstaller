@@ -23,7 +23,7 @@ This installer deploys the client-side components needed to launch and run Compa
 
 ## Usage
 
-This installer can be run interactively just by launching the executable.  It requires administrative privileges. Installation actions are logged to install.log in the installation directory.
+This installer can be run interactively just by launching the executable.  It requires administrative privileges. Installation actions are logged to install.log in the installation directory.  If the installer detects that a copy of Compass Client Components is already installed, it will prompt the user to remove the previous version or else prevent the installer from continuing.  If the user chooses to remove the previous version it will be silently uninstalled.  If the installer is being run silently, any previous versions will be automatically removed before the installer runs.
 
 **Choose Install Location Page**
 
