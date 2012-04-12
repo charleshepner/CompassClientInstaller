@@ -101,7 +101,7 @@ ${If} ${IsWin7}
 ${Else}
 ${EndIf}
 ```
-* .NET version detection from a third-party header DotNetChecker.nsh providing download and install of the required version.  I made some custom changes to the DotNetChecker.nsh file to prevent the user from continuing with the install if they canceled out of the dialog prompted them to install .NET.
+* .NET version detection from a third-party header DotNetChecker.nsh providing download and install of the required version.  I made some custom changes to the DotNetChecker.nsh file to prevent the user from continuing with the install if they canceled out of the dialog prompting them to install .NET.
 ```!insertmacro CheckNetFramework 40Full
 ```
 * A macro is being used to create Internet shortcuts
