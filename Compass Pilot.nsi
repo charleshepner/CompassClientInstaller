@@ -165,9 +165,7 @@ Function .onInit
   ReadRegStr $UninstallerPath ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString"
   
   ; If there is no path to the uninstaller in the registry, Compass Client Components is not installed, so do nothing
-  ${If} $UninstallerPath == ""
-	; Do nothing
-  ${Else}
+  ${If} $UninstallerPath != ""
 	MessageBox MB_ICONQUESTION|MB_OKCANCEL "Compass Client Components is already installed. Click OK to uninstall the version currently installed \
 	or Cancel to abort this installation." /SD IDOK IDOK +2
 	Abort
@@ -420,11 +418,7 @@ Function CreatePilotDesktopShortcut
 FunctionEnd
 
 
-; Called after the uninstaller completes successfully
-Function un.onUninstSuccess
-  HideWindow
-  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) was successfully removed from your computer." /SD IDOK
-FunctionEnd
+
 
 
 
@@ -484,3 +478,11 @@ Section Uninstall
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   SetAutoClose true
 SectionEnd
+
+
+
+; Called after the uninstaller completes successfully
+Function un.onUninstSuccess
+  HideWindow
+  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) was successfully removed from your computer." /SD IDOK
+FunctionEnd

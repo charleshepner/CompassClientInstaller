@@ -20,6 +20,8 @@ This installer deploys the client-side components needed to launch and run Compa
 * Uninstaller provided can be run from Add/Remove Programs or Programs and Features
 * Silent install mode (/S on command-line)
 * Answer file (answer.txt) to provide configuration (if run silently)
+* Prompt to remove older version (remove silently) if a previous version is detected
+* When running silently, automatically detects and removes a previous version
 
 ## Usage
 
