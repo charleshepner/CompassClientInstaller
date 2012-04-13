@@ -275,22 +275,30 @@ Section "MainSection" SEC01
     nsExec::Exec 'rundll32 C:\Windows\System32\dfshim.dll CleanOnlineAppCache'
     DetailPrint "Clearing Microsoft ClickOnce Cache."
 
-  ; Install a printer using the path to the printer management vbscripts on WinXP machines
+  ; Install printers using the path to the printer management vbscripts on WinXP machines
   ${If} ${IsWinXP}
     DetailPrint "Windows XP detected."
-    DetailPrint "Installing Tifconvert Printer Port."
+    DetailPrint "Installing Tifconvert Printer Port"
     nsExec::Exec 'cscript C:\Windows\System32\prnport.vbs -a -r ${TIFCONVERT_PORT_NAME} -h $CompassPrintServer -q ${TIFCONVERT_PORT_QUEUE} -o lpr -n 515 -2e -md'
-    DetailPrint "Installing Tifconvert Printer."
+    DetailPrint "Installing Tifconvert Printer"
     nsExec::Exec 'cscript C:\Windows\System32\prnmngr.vbs -a -p "${TIFCONVERT_PRINTER_NAME}" -m "${PRINTER_DRIVER32}" -r "${TIFCONVERT_PORT_NAME}"'
+    DetailPrint "Installing Compass Forms Printer Port"
+    nsExec::Exec 'cscript C:\Windows\System32\prnport.vbs -a -r ${FORMS_PORT_NAME} -h $CompassPrintServer -q ${FORMS_PORT_QUEUE} -o lpr -n 515 -2e -md'
+    DetailPrint "Installing Compass Forms Printer"
+    nsExec::Exec 'cscript C:\Windows\System32\prnmngr.vbs -a -p "${FORMS_PRINTER_NAME}" -m "${PRINTER_DRIVER32}" -r "${FORMS_PORT_NAME}"'
   ${EndIf}
 
-  ; Install a printer using the path to the printer management vbscripts on Win7 machines
+  ; Install printers using the path to the printer management vbscripts on Win7 machines
   ${If} ${IsWin7}
     DetailPrint "Windows 7 detected."
-    DetailPrint "Installing Tifconvert Printer Port."
+    DetailPrint "Installing Tifconvert Printer Port"
     nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnport.vbs -a -r ${TIFCONVERT_PORT_NAME} -h $CompassPrintServer -q ${TIFCONVERT_PORT_QUEUE} -o lpr -n 515 -2e -md'
-    DetailPrint "Installing Tifconvert Printer."
+    DetailPrint "Installing Tifconvert Printer"
     nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnmngr.vbs -a -p "${TIFCONVERT_PRINTER_NAME}" -m "${PRINTER_DRIVER64}" -r "${TIFCONVERT_PORT_NAME}"'
+    DetailPrint "Installing Compass Forms Printer Port"
+    nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnport.vbs -a -r ${FORMS_PORT_NAME} -h $CompassPrintServer -q ${FORMS_PORT_QUEUE} -o lpr -n 515 -2e -md'
+    DetailPrint "Installing Compass Forms Printer"
+    nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnmngr.vbs -a -p "${FORMS_PRINTER_NAME}" -m "${PRINTER_DRIVER64}" -r "${FORMS_PORT_NAME}"'
   ${EndIf}
 
   ; If the install is silent, create a desktop shortcut, else jump over the shortcut creation line and continue
@@ -455,19 +463,37 @@ Section Uninstall
   Delete "$DLL_INSTALL_PATH\Ltbar7w15u.dll"
   Delete "$DLL_INSTALL_PATH\Ltbar7r15u.dll"
   
-  ;START TIFCONVERT PRINTER UNINSTALL
-  ${If} ${IsWinXP}
-    DetailPrint "Uninstalling Windows XP Tifconvert"
-    nsExec::Exec 'cscript C:\Windows\System32\prnport.vbs -d -r ${TIFCONVERT_PORT_NAME}'
-    nsExec::Exec 'cscript C:\Windows\System32\prnmngr.vbs -d -p ${TIFCONVERT_PRINTER_NAME}'
+   ; Uninstall Compass Forms and Tifconvert Ports for Windows XP
+  ${If} ${IsWin7}
+    DetailPrint "Uninstalling Tifconvert Printer for Windows XP"
+    nsExec::Exec 'cscript C:\Windows\System32\prnmngr.vbs -d -p "${TIFCONVERT_PRINTER_NAME}"'
+    DetailPrint "Uninstalling Compass Forms Printer for Windows XP"
+    nsExec::Exec 'cscript C:\Windows\System32\prnmngr.vbs -d -p "${FORMS_PRINTER_NAME}"'
   ${EndIf}
 
+    ; Uninstall Compass Forms and Tifconvert Printers for Windows XP
   ${If} ${IsWin7}
-    DetailPrint "Uninstalling Windows 7 Tifconvert"
-    nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnport.vbs -d -r ${TIFCONVERT_PORT_NAME}'
-    nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnmngr.vbs -d -p ${TIFCONVERT_PRINTER_NAME}'
+    DetailPrint "Uninstalling Tifconvert Port for Windows XP"
+    nsExec::Exec 'cscript C:\Windows\System32\prnport.vbs -d -r "${TIFCONVERT_PORT_NAME}"'
+    DetailPrint "Uninstalling Compass Forms Printer Port for Windows XP"
+    nsExec::Exec 'cscript C:\Windows\System32\prnport.vbs -d -r "${FORMS_PORT_NAME}"'
   ${EndIf}
-  ;END TIFCONVERT PRINTER UNINSTALL
+
+  ; Uninstall Compass Forms and Tifconvert Ports for Windows 7
+  ${If} ${IsWin7}
+    DetailPrint "Uninstalling Tifconvert Printer for Windows 7"
+    nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnmngr.vbs -d -p "${TIFCONVERT_PRINTER_NAME}"'
+    DetailPrint "Uninstalling Compass Forms Printer for Windows 7"
+    nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnmngr.vbs -d -p "${FORMS_PRINTER_NAME}"'
+  ${EndIf}
+  
+    ; Uninstall Compass Forms and Tifconvert Printers for Windows 7
+  ${If} ${IsWin7}
+    DetailPrint "Uninstalling Tifconvert Port for Windows 7"
+    nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnport.vbs -d -r "${TIFCONVERT_PORT_NAME}"'
+    DetailPrint "Uninstalling Compass Forms Printer Port for Windows 7"
+    nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnport.vbs -d -r "${FORMS_PORT_NAME}"'
+  ${EndIf}
 
   ; Remove the desktop shortcut and Start Menu items
   Delete "$DESKTOP\Compass Pilot.url"
