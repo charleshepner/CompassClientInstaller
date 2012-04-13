@@ -54,8 +54,9 @@ The user can choose whether or not to create a desktop shorcut (selected by defa
 
 This installer can be run silently just by adding the command-line parameter /S (case-sensitive).  An answer file can be provided so that the installer will know what values to use for the configurable areas in the wizard.  The installer will automatically detect the presence of answer.txt in the same folder as the installer executable and will draw configuration values from it.  Optionally /ANSWERFILE=path can be provide on the command-line to provide a path to an answer file.  If this command-line parameter is provided it will be used in preference to an answer file in the same directory as the installer executable.
 
-Answer.txt is formatted in the INI file format.  It has one section [Settings].  It has 3 possible key value pairs:
+Answer.txt is formatted in the INI file format.  It has two sections [Settings] and [Features].  Here are the possible key value pairs:
 
+** [Settings] controls what shows on the settings page of the wizard**
 * CompassClickOnceProtocol
   * Possible values: http:// or https://
   * e.g. http://
@@ -65,6 +66,36 @@ Answer.txt is formatted in the INI file format.  It has one section [Settings]. 
 * CompassPrintServer
   * Possible values: the network or DNS name of the print server (for virtual printing) where RPM is installed
   * e.g. printserver01
+  
+**[Features] controls which of the corresponding features are selected on the components page of the wizard**
+*InstallCompassClientIcon=True
+  * Possible values: True or False
+*InstallLEADTOOLSDLLs=True
+  * Possible values: True or False
+InstallFormsPrinter=True
+  * Possible values: True or False
+*InstallTifconvertPrinter=False
+  * Possible values: True or False
+*InstallCaptureKioskIcon=False
+  * Possible values: True or False
+*InstallSelfScanKioskIcon=False
+  * Possible values: True or False
+
+Example answer file:
+
+```[Settings]
+CompassClickOnceProtocol=https://
+CompassClickOnceURL=kyleserver/compassframework/compassapi.application
+CompassPrintServer=kzprintserver01
+[Features]
+InstallCompassClientIcon=True
+InstallLEADTOOLSDLLs=True
+InstallFormsPrinter=True
+InstallTifconvertPrinter=False
+InstallCaptureKioskIcon=False
+InstallSelfScanKioskIcon=False
+
+```
   
 If the answer file is present and the installer is run interactively, the installer will use the values from the answer file in the wizard as the defaults instead of the compiled in default values (e.g. [CompassClickOnceServer]/compassframework/compassapi.application and [CompassPrintServer]).
   

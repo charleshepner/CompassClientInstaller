@@ -2,3 +2,10 @@
 CompassClickOnceProtocol=https://
 CompassClickOnceURL=kyleserver/compassframework/compassapi.application
 CompassPrintServer=kzprintserver01
+[Features]
+InstallCompassClientIcon=True
+InstallLEADTOOLSDLLs=True
+InstallFormsPrinter=True
+InstallTifconvertPrinter=False
+InstallCaptureKioskIcon=False
+InstallSelfScanKioskIcon=False
