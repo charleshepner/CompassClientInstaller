@@ -268,8 +268,12 @@ Section "MainSection" SEC01
   File "Resources\Ltbar7w15u.dll"
 
   ; Set installation directory back to the installation directory chosen in the setup wizard
-  SetOutPath "$INSTDIR"
-  File "Resources\CompassPilot.ico"
+    SetOutPath "$INSTDIR"
+    File "Resources\CompassPilot.ico"
+
+  ; Clear ClickOnce Cache during installation
+    nsExec::Exec 'rundll32 C:\Windows\System32\dfshim.dll CleanOnlineAppCache'
+    DetailPrint "Clearing Microsoft ClickOnce Cache."
 
   ; Install a printer using the path to the printer management vbscripts on WinXP machines
   ${If} ${IsWinXP}
