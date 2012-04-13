@@ -9,6 +9,7 @@ This installer deploys the client-side components needed to launch and run Compa
 * Ltbar7w15u.dll
 * CompassPilot.ico
 * Tifconvert Printer
+* Compass Forms Printer
 * Desktop Shortcut
 * Start Menu Shortcut
 

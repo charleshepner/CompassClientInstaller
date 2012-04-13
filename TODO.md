@@ -8,7 +8,7 @@ TODO
 * *Added 4/6/2012* Get printer install/uninstall working **Completed 4/6/2012**
 * *Added 4/6/2012* Fix issue with .NET version downloader when canceling out of the download **Completed 4/7/2012**
 * *Added 4/6/2012* Fix issue with printing TifConvert to the EC2 server **Completed 4/9/2012**
-* *Added 4/6/2012* Potential XP issue (exception loading type)
+* *Added 4/6/2012* Potential XP issue (exception loading type) **Update: Working on VM, testing on XP host machine this weekend**
 
 ## Medium Priority
 
@@ -20,7 +20,7 @@ TODO
 * *Added 4/10/2012* Add further comments to the source code **Completed 4/11/2012**
 * *Added 4/10/2012* Merge ExperienceUI into the master branch **Not possible 4/10/2012 - not possible using nsDialogs for custom pages**
 * *Added 4/10/2012* Detect if Compass Client Components already installed and remove, then install new copy **Completed 4/11/2012**
-* *Added 4/10/2012* Need to clear click once cache when doing an install (mage -cc or dfshim,cleanonlineappcache)
+* *Added 4/10/2012* Need to clear click once cache when doing an install (mage -cc or dfshim,cleanonlineappcache) **Completed 4/13/2012**
 
 ## Low Priority
 
@@ -29,7 +29,7 @@ TODO
 * *Added 4/6/2012* Add support for silent install command-line switch **Completed 4/9/2012**
 * *Added 4/6/2012* Add support for answer files and command-line switch **Completed 4/9/2012**
 * *Added 4/10/2012* Add ability to enable/disable the creation of the desktop shortcut and start menu shortcuts from the answer file
-* *Added 4/10/2012* Add creation of the Compass Forms printer and control over which printers get created in answer file
+* *Added 4/10/2012* Add creation of the Compass Forms printer and control over which printers get created in answer file **Half Complete, still need to control answer file**
 * *Added 4/10/2012* Add creation of Capture Kiosk and Self-scan Kiosk shortcuts and control over them in the answer file
 * *Added 4/10/2012* Add ability to control installation path in the answer file
 * *Added 4/10/2012* Add popup when /? is passed on command-line to show syntax **Completed 4/11/2012**
