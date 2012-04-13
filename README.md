@@ -53,7 +53,7 @@ The Compass ClickOnce client can be delivered over http or https, selectable fro
 
 **Finish Page**
 
-The user can choose whether or not to create a desktop shorcut (selected by default).
+Click Finish.
 
 ## Silent/Unattended Install
 
