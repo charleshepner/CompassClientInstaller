@@ -84,7 +84,8 @@ InstallFormsPrinter=True
 
 Example answer file:
 
-```[Settings]
+```
+[Settings]
 CompassClickOnceProtocol=https://
 CompassClickOnceURL=kyleserver/compassframework/compassapi.application
 CompassPrintServer=kzprintserver01
@@ -95,7 +96,6 @@ InstallFormsPrinter=True
 InstallTifconvertPrinter=False
 InstallCaptureKioskIcon=False
 InstallSelfScanKioskIcon=False
-
 ```
   
 If the answer file is present and the installer is run interactively, the installer will use the values from the answer file in the wizard as the defaults instead of the compiled in default values (e.g. [CompassClickOnceServer]/compassframework/compassapi.application and [CompassPrintServer]).
