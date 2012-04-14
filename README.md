@@ -28,6 +28,10 @@ This installer deploys the client-side components needed to launch and run Compa
 
 This installer can be run interactively just by launching the executable.  It requires administrative privileges. Installation actions are logged to install.log in the installation directory.  If the installer detects that a copy of Compass Client Components is already installed, it will prompt the user to remove the previous version or else prevent the installer from continuing.  If the user chooses to remove the previous version it will be silently uninstalled.  If the installer is being run silently, any previous versions will be automatically removed before the installer runs.
 
+**Components (Features) Page**
+
+Choose which features will be installed.  Mousing over each feature shows a description below.  At least one feature must be selected to continue.
+
 **Choose Install Location Page**
 
 Installation files will be written by default to:
@@ -49,7 +53,7 @@ The Compass ClickOnce client can be delivered over http or https, selectable fro
 
 **Finish Page**
 
-The user can choose whether or not to create a desktop shorcut (selected by default).
+Click Finish.
 
 ## Silent/Unattended Install
 
@@ -57,7 +61,8 @@ This installer can be run silently just by adding the command-line parameter /S 
 
 Answer.txt is formatted in the INI file format.  It has two sections [Settings] and [Features].  Here are the possible key value pairs:
 
-** [Settings] controls what shows on the settings page of the wizard**
+**Settings** controls what shows on the settings page of the wizard
+
 * CompassClickOnceProtocol
   * Possible values: http:// or https://
   * e.g. http://
@@ -68,7 +73,8 @@ Answer.txt is formatted in the INI file format.  It has two sections [Settings] 
   * Possible values: the network or DNS name of the print server (for virtual printing) where RPM is installed
   * e.g. printserver01
   
-**[Features] controls which of the corresponding features are selected on the components page of the wizard**
+**Features** controls which of the corresponding features are selected on the components page of the wizard
+
 *InstallCompassClientIcon=True
   * Possible values: True or False
 *InstallLEADTOOLSDLLs=True
@@ -84,7 +90,8 @@ InstallFormsPrinter=True
 
 Example answer file:
 
-```[Settings]
+```
+[Settings]
 CompassClickOnceProtocol=https://
 CompassClickOnceURL=kyleserver/compassframework/compassapi.application
 CompassPrintServer=kzprintserver01
@@ -95,7 +102,6 @@ InstallFormsPrinter=True
 InstallTifconvertPrinter=False
 InstallCaptureKioskIcon=False
 InstallSelfScanKioskIcon=False
-
 ```
   
 If the answer file is present and the installer is run interactively, the installer will use the values from the answer file in the wizard as the defaults instead of the compiled in default values (e.g. [CompassClickOnceServer]/compassframework/compassapi.application and [CompassPrintServer]).
@@ -124,21 +130,31 @@ First steps:
 Developer notes:
 
 * 64-bit detection is from the built in header x64.nsh
+
 ```${If} ${RunningX64}
 ```
+
 * OS version detection is from the built in header WinVer.nsh
+
 ```${If} ${IsWinXP}
 ${If} ${IsWin7}
 ```
+
 * LogicLib header is being used for conditionals and loops with a custom macro for file and directory testing
+
 ```${If} ${FileExists} "C:\mysamplefile.txt"
 ${Else}
 ${EndIf}
 ```
+
 * .NET version detection from a third-party header DotNetChecker.nsh providing download and install of the required version.  I made some custom changes to the DotNetChecker.nsh file to prevent the user from continuing with the install if they canceled out of the dialog prompting them to install .NET.
+
 ```!insertmacro CheckNetFramework 40Full
 ```
+
 * A macro is being used to create Internet shortcuts
+
 ```!insertmacro CreateInternetShortcut "path_to_new_shortcut" "URL" "path_to_icon" "0"
 ```
+
 * The custom page included was built using nsDialogs instead of the older InstallOptions ini files
