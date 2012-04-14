@@ -336,7 +336,6 @@ Section "Compass Capture Kiosk Icon" SECCAPTUREKIOSKICON
 SectionEnd
 
 Section "Compass Self-Scan Kiosk Icon" SECSELFSCANKIOSKICON
-;http://vm-qa-co01/g3Onbase/compassapi.application?AppID=20&action=kiosk
   ; Set installation directory back to the installation directory chosen in the setup wizard
   SetOutPath "$INSTDIR"
   File "Resources\CompassPilot.ico"
@@ -666,7 +665,11 @@ Section Uninstall
 
   ; Remove the desktop shortcut and Start Menu items
   Delete "$DESKTOP\Compass Pilot.url"
+  Delete "$DESKTOP\Compass Capture Kiosk.url"
+  Delete "$DESKTOP\Compass Self-Scan Kiosk.url"
   Delete "$SMPROGRAMS\Compass Pilot\Compass Pilot.url"
+  Delete "$SMPROGRAMS\Compass Pilot\Compass Capture Kiosk.url"
+  Delete "$SMPROGRAMS\Compass Pilot\Compass Self-Scan Kiosk.url"
   Delete "$SMPROGRAMS\Compass Pilot\Northwoods Website.url"
 
   ; Remove the Start Menu folder and the installation directory
