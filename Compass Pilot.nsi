@@ -324,11 +324,28 @@ SectionGroupEnd ; End SectionGroup "Compass Forms"
 SectionGroupEnd ; End SectionGroup "Compass Client"
 
 Section "Compass Capture Kiosk Icon" SECCAPTUREKIOSKICON
+  ; Set installation directory back to the installation directory chosen in the setup wizard
+  SetOutPath "$INSTDIR"
+  File "Resources\CompassPilot.ico"
 
+  ; Create the Desktop shortcut
+  !insertmacro CreateInternetShortcut "$DESKTOP\Compass Capture Kiosk" "$CompassClickOnceProtocol$CompassClickOnceURL?AppID=10&action=kiosk" "$INSTDIR\CompassPilot.ico" "0"
+  ; Create the Start Menu shortcut
+  CreateDirectory "$SMPROGRAMS\Compass Pilot"
+  !insertmacro CreateInternetShortcut "$SMPROGRAMS\Compass Pilot\Compass Capture Kiosk" "$CompassClickOnceProtocol$CompassClickOnceURL?AppID=10&action=kiosk" "$INSTDIR\CompassPilot.ico" "0"
 SectionEnd
 
 Section "Compass Self-Scan Kiosk Icon" SECSELFSCANKIOSKICON
+;http://vm-qa-co01/g3Onbase/compassapi.application?AppID=20&action=kiosk
+  ; Set installation directory back to the installation directory chosen in the setup wizard
+  SetOutPath "$INSTDIR"
+  File "Resources\CompassPilot.ico"
 
+  ; Create the Desktop shortcut
+  !insertmacro CreateInternetShortcut "$DESKTOP\Compass Self-Scan Kiosk" "$CompassClickOnceProtocol$CompassClickOnceURL?AppID=20&action=kiosk" "$INSTDIR\CompassPilot.ico" "0"
+  ; Create the Start Menu shortcut
+  CreateDirectory "$SMPROGRAMS\Compass Pilot"
+  !insertmacro CreateInternetShortcut "$SMPROGRAMS\Compass Pilot\Compass Self-Scan Kiosk" "$CompassClickOnceProtocol$CompassClickOnceURL?AppID=20&action=kiosk" "$INSTDIR\CompassPilot.ico" "0"
 SectionEnd
 
 

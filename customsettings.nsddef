@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This file was created by NSISDialogDesigner 0.9.14.0
+http://coolsoft.altervista.org/nsisdialogdesigner
+Do not edit manually!
+-->
+<Dialog Name="customsettings" Title="Dialog title..." Subtitle="Dialog subtitle...">
+  <GroupBox Name="GroupBox1" Location="12, 45" Size="426, 51" Text="Compass Launch URL" TabIndex="7">
+    <TextBox Name="TextBox1" Location="67, 18" Size="353, 20" TabIndex="1" />
+    <DropList Name="DropList1" Location="7, 18" Size="54, 21" SelectedItem="http://" TabIndex="4">
+      <Items>
+        <value>http://</value>
+        <value>https://</value>
+      </Items>
+    </DropList>
+  </GroupBox>
+  <GroupBox Name="GroupBox2" Location="12, 130" Size="426, 50" Text="Print Server Name" TabIndex="8">
+    <TextBox Name="TextBox2" Location="7, 19" Size="413, 20" TabIndex="3" />
+  </GroupBox>
+  <Label Name="Label1" Location="12, 9" Size="426, 33" Text="Enter the URL from which Compass Pilot will be launched.  Either http or https can be chosen depending on how the server is configured." TabIndex="9" />
+  <Label Name="Label2" Location="19, 109" Size="419, 18" Text="Enter the network name of the print server." TabIndex="10" />
+</Dialog>
