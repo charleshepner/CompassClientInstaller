@@ -29,8 +29,8 @@ TODO
 * *Added 4/6/2012* Add support for silent install command-line switch **Completed 4/9/2012**
 * *Added 4/6/2012* Add support for answer files and command-line switch **Completed 4/9/2012**
 * *Added 4/10/2012* Add ability to enable/disable the creation of the desktop shortcut and start menu shortcuts from the answer file
-* *Added 4/10/2012* Add creation of the Compass Forms printer and control over which printers get created in answer file **Half Complete, still need to control answer file**
-* *Added 4/10/2012* Add creation of Capture Kiosk and Self-scan Kiosk shortcuts and control over them in the answer file
+* *Added 4/10/2012* Add creation of the Compass Forms printer and control over which printers get created in answer file **Completed 4/13/2012**
+* *Added 4/10/2012* Add creation of Capture Kiosk and Self-scan Kiosk shortcuts and control over them in the answer file **Completed 4/13/2012**
 * *Added 4/10/2012* Add ability to control installation path in the answer file
 * *Added 4/10/2012* Add popup when /? is passed on command-line to show syntax **Completed 4/11/2012**
 * *Added 4/10/2012* Add command-line parameter /ANSWSERFILE= to allow specifying an answer file at an arbitrary path **Completed 4/11/2012**
