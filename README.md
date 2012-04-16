@@ -72,20 +72,20 @@ Answer.txt is formatted in the INI file format.  It has two sections [Settings] 
 * CompassPrintServer
   * Possible values: the network or DNS name of the print server (for virtual printing) where RPM is installed
   * e.g. printserver01
-  
+
 **Features** controls which of the corresponding features are selected on the components page of the wizard
 
-*InstallCompassClientIcon=True
+* InstallCompassClientIcon=True
   * Possible values: True or False
-*InstallLEADTOOLSDLLs=True
+* InstallLEADTOOLSDLLs=True
   * Possible values: True or False
-InstallFormsPrinter=True
+* InstallFormsPrinter=True
   * Possible values: True or False
-*InstallTifconvertPrinter=False
+* InstallTifconvertPrinter=False
   * Possible values: True or False
-*InstallCaptureKioskIcon=False
+* InstallCaptureKioskIcon=False
   * Possible values: True or False
-*InstallSelfScanKioskIcon=False
+* InstallSelfScanKioskIcon=False
   * Possible values: True or False
 
 Example answer file:
@@ -93,8 +93,8 @@ Example answer file:
 ```
 [Settings]
 CompassClickOnceProtocol=https://
-CompassClickOnceURL=kyleserver/compassframework/compassapi.application
-CompassPrintServer=kzprintserver01
+CompassClickOnceURL=appserver01/compassframework/compassapi.application
+CompassPrintServer=printserver01
 [Features]
 InstallCompassClientIcon=True
 InstallLEADTOOLSDLLs=True
