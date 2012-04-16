@@ -395,7 +395,14 @@ SectionEnd
 
 ; This function is called immediately before the Welcome page appears
 Function .onInit
+  ; Require Windows XP or higher
+  ${IfNot} ${AtLeastWinXP}
+	MessageBox MB_OK|MB_ICONSTOP "This installer can only be run on Windows XP or higher."
+	Abort
+  ${EndIf}
+
   Var /global UninstallerPath
+  
   ; Check the registry to see if Compass Client Components is already installed
   ReadRegStr $UninstallerPath ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString"
 
