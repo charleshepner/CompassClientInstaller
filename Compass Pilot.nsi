@@ -587,6 +587,26 @@ FunctionEnd
 Function RequireOneComponent
   ; Add code here to ensure that at least one component is selected
   ; before leaving the features page.  Make sure it works with silent installs!
+  SectionGetFlags "${SECCOMPASSICON}" $0
+  IntOp $1 $0 & ${SF_SELECTED}
+  SectionGetFlags "${SECLEADTOOLSDLLS}" $0
+  IntOp $0 $0 & ${SF_SELECTED}
+  IntOp $1 $1 + $0
+  SectionGetFlags "${SECFORMSPRINTER}" $0
+  IntOp $0 $0 & ${SF_SELECTED}
+  IntOp $1 $1 + $0
+  SectionGetFlags "${SECTIFCONVERTPRINTER}" $0
+  IntOp $0 $0 & ${SF_SELECTED}
+  IntOp $1 $1 + $0
+  SectionGetFlags "${SECCAPTUREKIOSKICON}" $0
+  IntOp $0 $0 & ${SF_SELECTED}
+  IntOp $1 $1 + $0
+  SectionGetFlags "${SECSELFSCANKIOSKICON}" $0
+  IntOp $0 $0 & ${SF_SELECTED}
+  IntOp $1 $1 + $0
+  StrCmp $1 "0" 0 +3
+  MessageBox MB_OK|MB_ICONSTOP "You must select at least one component to continue."
+  Abort     ;stay at page
 FunctionEnd
 
 
