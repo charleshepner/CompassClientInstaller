@@ -75,17 +75,17 @@ Answer.txt is formatted in the INI file format.  It has two sections [Settings] 
 
 **Features** controls which of the corresponding features are selected on the components page of the wizard
 
-* InstallCompassClientIcon=True
+* InstallCompassClientIcon
   * Possible values: True or False
-* InstallLEADTOOLSDLLs=True
+* InstallLEADTOOLSDLLs
   * Possible values: True or False
-* InstallFormsPrinter=True
+* InstallFormsPrinter
   * Possible values: True or False
-* InstallTifconvertPrinter=False
+* InstallTifconvertPrinter
   * Possible values: True or False
-* InstallCaptureKioskIcon=False
+* InstallCaptureKioskIcon
   * Possible values: True or False
-* InstallSelfScanKioskIcon=False
+* InstallSelfScanKioskIcon
   * Possible values: True or False
 
 Example answer file:
