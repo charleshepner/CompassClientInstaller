@@ -108,7 +108,7 @@ Answer.txt is formatted in the INI file format.  It has two sections [Settings] 
 **Options** controls optional behavior of the installer
 
 * ClearClickOnceCache
-  * If True, will clear the ClickOnce cache during the install, if false, leaves the cache intact
+  * If True, will clear the ClickOnce cache during the install, if False, leaves the cache intact
   * Possible values: True or False
 
 Example answer file:
@@ -160,30 +160,35 @@ Developer notes:
 
 * 64-bit detection is from the built in header x64.nsh
 
-```${If} ${RunningX64}
+```
+${If} ${RunningX64}
 ```
 
 * OS version detection is from the built in header WinVer.nsh
 
-```${If} ${IsWinXP}
+```
+${If} ${IsWinXP}
 ${If} ${IsWin7}
 ```
 
 * LogicLib header is being used for conditionals and loops with a custom macro for file and directory testing
 
-```${If} ${FileExists} "C:\mysamplefile.txt"
+```
+${If} ${FileExists} "C:\mysamplefile.txt"
 ${Else}
 ${EndIf}
 ```
 
 * .NET version detection from a third-party header DotNetChecker.nsh providing download and install of the required version.  I made some custom changes to the DotNetChecker.nsh file to prevent the user from continuing with the install if they canceled out of the dialog prompting them to install .NET.
 
-```!insertmacro CheckNetFramework 40Full
+```
+!insertmacro CheckNetFramework 40Full
 ```
 
 * A macro is being used to create Internet shortcuts
 
-```!insertmacro CreateInternetShortcut "path_to_new_shortcut" "URL" "path_to_icon" "0"
+```
+!insertmacro CreateInternetShortcut "path_to_new_shortcut" "URL" "path_to_icon" "0"
 ```
 
 * The custom page included was built using nsDialogs instead of the older InstallOptions ini files
