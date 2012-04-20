@@ -9,3 +9,6 @@ InstallFormsPrinter=True
 InstallTifconvertPrinter=False
 InstallCaptureKioskIcon=False
 InstallSelfScanKioskIcon=False
+InstallNorthwoodsIcon=False
+[Options]
+ClearClickOnceCache=True
