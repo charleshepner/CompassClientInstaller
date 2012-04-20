@@ -119,11 +119,14 @@ CompassClickOnceProtocol=https://
 CompassClickOnceURL=appserver01/compassframework/compassapi.application
 CompassPrintServer=printserver01
 [Features]
+InstallCompassClientSMIcon=True
 InstallCompassClientIcon=True
 InstallLEADTOOLSDLLs=True
 InstallFormsPrinter=True
 InstallTifconvertPrinter=False
+InstallCaptureKioskSMIcon=True
 InstallCaptureKioskIcon=False
+InstallSelfScanKioskSMIcon=True
 InstallSelfScanKioskIcon=False
 InstallNorthwoodsIcon=True
 [Options]
