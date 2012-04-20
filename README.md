@@ -75,17 +75,32 @@ Answer.txt is formatted in the INI file format.  It has two sections [Settings] 
 
 **Features** controls which of the corresponding features are selected on the components page of the wizard
 
+* InstallCompassClientSMIcon
+  * Start menu shortcut for Pilot
+  * Possible values: True or False
 * InstallCompassClientIcon
+  * Desktop shortcut for Pilot
   * Possible values: True or False
 * InstallLEADTOOLSDLLs
+  * Dll's required for barcoding engine in Forms
   * Possible values: True or False
 * InstallFormsPrinter
+  * Virtual printer for Forms
   * Possible values: True or False
 * InstallTifconvertPrinter
+  * Virtual printer for forms designers
   * Possible values: True or False
+* InstallCaptureKioskSMIcon
+  * Start menu shorcut for Capture Kiosk 
+  * Possible values: True or False 
 * InstallCaptureKioskIcon
+  * Desktop shortcut for Capture Kiosk
+  * Possible values: True or False
+* InstallSelfScanKioskSMIcon
+  * Start menu shortcut for Self Scan Kiosk
   * Possible values: True or False
 * InstallSelfScanKioskIcon
+  * Desktop shortcut for Self Scan Kiosk
   * Possible values: True or False
 * InstallNorthwoodsIcon
   * Possible values: True or False
@@ -93,8 +108,8 @@ Answer.txt is formatted in the INI file format.  It has two sections [Settings] 
 **Options** controls optional behavior of the installer
 
 * ClearClickOnceCache
+  * If True, will clear the ClickOnce cache during the install, if false, leaves the cache intact
   * Possible values: True or False
-  * If True, will clear the ClickOnce cache during the install  
 
 Example answer file:
 

@@ -78,12 +78,15 @@ Page custom fnc_customsettings_Show
 
 
 ; Feature descriptions
-LangString DESC_COMPASS_ICON ${LANG_ENGLISH} "Create Start Menu and Desktop shortcuts for the Compass client"
+LangString DESC_COMPASS_SMICON ${LANG_ENGLISH} "Create Start Menu shortcut for the Compass client"
+LangString DESC_COMPASS_ICON ${LANG_ENGLISH} "Create Desktop shortcut for the Compass client"
 LangString DESC_LEADTOOLS_DLLS ${LANG_ENGLISH} "Install LEADTOOLS DLL's for Compass Forms"
 LangString DESC_FORMS_PRINTER ${LANG_ENGLISH} "Create a local printer (Forms Printer) for virtual printing"
 LangString DESC_TIFCONVERT_PRINTER ${LANG_ENGLISH} "Create a local printer (TifConvert) for forms conversion"
-LangString DESC_CAPTURE_KIOSK_ICON ${LANG_ENGLISH} "Create Start Menu and Desktop shortcuts for Capture Kiosk"
-LangString DESC_SELF_SCAN_KIOSK_ICON ${LANG_ENGLISH} "Create Start Menu and Desktop shortcuts for the Self Scan Kiosk"
+LangString DESC_CAPTURE_KIOSK_SMICON ${LANG_ENGLISH} "Create Start Menu shortcut for Capture Kiosk"
+LangString DESC_CAPTURE_KIOSK_ICON ${LANG_ENGLISH} "Create Desktop shortcut for Capture Kiosk"
+LangString DESC_SELF_SCAN_KIOSK_SMICON ${LANG_ENGLISH} "Create Start Menu shortcut for the Self Scan Kiosk"
+LangString DESC_SELF_SCAN_KIOSK_ICON ${LANG_ENGLISH} "Create Desktop shortcut for the Self Scan Kiosk"
 LangString DESC_NORTHWOODS_ICON ${LANG_ENGLISH} "Create Start Menu shortcut for the Northwoods website"
 
 
@@ -147,11 +150,14 @@ LangString DESC_NORTHWOODS_ICON ${LANG_ENGLISH} "Create Start Menu shortcut for 
 !define COMPASS_CLICKONCE_PROTOCOL "http://"
 !define COMPASS_CLICKONCE_URL "[CompassClickOnceServer]/compassframework/compassapi.application"
 !define COMPASS_PRINT_SERVER "[CompassPrintServer]"
+!define INSTALL_COMPASSCLIENT_SMICON "True"
 !define INSTALL_COMPASSCLIENT_ICON "True"
 !define INSTALL_LEADTOOLSDLLS "True"
 !define INSTALL_FORMSPRINTER "True"
 !define INSTALL_TIFCONVERTPRINTER "False"
+!define INSTALL_CAPTUREKIOSK_SMICON "False"
 !define INSTALL_CAPTUREKIOSK_ICON "False"
+!define INSTALL_SELFSCANKIOSK_SMICON "False"
 !define INSTALL_SELFSCANKIOSK_ICON "False"
 !define INSTALL_NORTHWOODS_ICON "True"
 !define CLEAR_CLICKONCE_CACHE "True"
@@ -199,11 +205,14 @@ Section "-Pre"
   Var /global CompassClickOnceProtocol
   Var /global CompassClickOnceURL
   Var /global CompassPrintServer
+  Var /global InstallCompassClientSMIcon
   Var /global InstallCompassClientIcon
   Var /global InstallLEADTOOLSDLLs
   Var /global InstallFormsPrinter
   Var /global InstallTifconvertPrinter
+  Var /global InstallCaptureKioskSMIcon
   Var /global InstallCaptureKioskIcon
+  Var /global InstallSelfScanKioskSMIcon
   Var /global InstallSelfScanKioskIcon
   Var /global InstallNorthwoodsIcon
   Var /global ClearClickOnceCache
@@ -222,11 +231,14 @@ Section "-Pre"
     DetailPrint "Answer file - CompassClickOnceProtocol: $CompassClickOnceProtocol"
     DetailPrint "Answer file - CompassClickOnceURL: $CompassClickOnceURL"
     DetailPrint "Answer file - CompassPrintServer: $CompassPrintServer"
+    DetailPrint "Answer file - InstallCompassClientSMIcon: $InstallCompassClientSMIcon"
     DetailPrint "Answer file - InstallCompassClientIcon: $InstallCompassClientIcon"
     DetailPrint "Answer file - InstallLEADTOOLSDLLs: $InstallLEADTOOLSDLLs"
     DetailPrint "Answer file - InstallFormsPrinter: $InstallFormsPrinter"
     DetailPrint "Answer file - InstallTifconvertPrinter: $InstallTifconvertPrinter"
+    DetailPrint "Answer file - InstallCaptureKioskSMIcon: $InstallCaptureKioskSMIcon"
     DetailPrint "Answer file - InstallCaptureKioskIcon: $InstallCaptureKioskIcon"
+    DetailPrint "Answer file - InstallSelfScanKioskSMIcon: $InstallSelfScanKioskSMIcon"
     DetailPrint "Answer file - InstallSelfScanKioskIcon: $InstallSelfScanKioskIcon"
     DetailPrint "Answer file - InstallNorthwoodsIcon: $InstallNorthwoodsIcon"
     DetailPrint "Answer file - ClearClickOnceCache: $ClearClickOnceCache"
@@ -253,13 +265,24 @@ SectionEnd
 SectionGroup /e "Compass Client"
 
 ; These commands are run when the Install button is clicked in the setup wizard if the section is selected on the components page
-Section "Compass Client Icon" SECCOMPASSICON
+Section "Compass Client Desktop Shorcut" SECCOMPASSICON
   ; Set installation directory back to the installation directory chosen in the setup wizard
   SetOutPath "$INSTDIR"
   File "Resources\CompassPilot.ico"
 
   ; Create the Desktop shortcut
   !insertmacro CreateInternetShortcut "$DESKTOP\Compass Pilot" "$CompassClickOnceProtocol$CompassClickOnceURL" "$INSTDIR\CompassPilot.ico" "0"
+SectionEnd
+
+
+
+
+; These commands are run when the Install button is clicked in the setup wizard if the section is selected on the components page
+Section "Compass Client Start Menu Shortcut" SECCOMPASSSMICON
+  ; Set installation directory back to the installation directory chosen in the setup wizard
+  SetOutPath "$INSTDIR"
+  File "Resources\CompassPilot.ico"
+
   ; Create the Start Menu shortcut
   CreateDirectory "$SMPROGRAMS\Compass Pilot"
   !insertmacro CreateInternetShortcut "$SMPROGRAMS\Compass Pilot\Compass Pilot" "$CompassClickOnceProtocol$CompassClickOnceURL" "$INSTDIR\CompassPilot.ico" "0"
@@ -269,9 +292,9 @@ SectionEnd
 
 
 
-; These commands are run when the Install button is clicked in the setup wizard if the section is selected on the components page
 SectionGroup /e "Compass Forms"
 
+; These commands are run when the Install button is clicked in the setup wizard if the section is selected on the components page
 Section "LEADTOOLS DLL's" SECLEADTOOLSDLLS
   Var /global DLL_INSTALL_PATH
 
@@ -291,6 +314,7 @@ SectionEnd
 
 
 
+; These commands are run when the Install button is clicked in the setup wizard if the section is selected on the components page
 Section "Forms Printer" SECFORMSPRINTER
   ; Install a printer using the path to the printer management vbscripts on Windows XP machines
   ${If} ${IsWinXP}
@@ -313,6 +337,7 @@ SectionEnd
 
 
 
+; These commands are run when the Install button is clicked in the setup wizard if the section is selected on the components page
 Section "Tifconvert Printer" SECTIFCONVERTPRINTER
   ; Install a printer using the path to the printer management vbscripts on Windows XP machines
   ${If} ${IsWinXP}
@@ -333,29 +358,59 @@ Section "Tifconvert Printer" SECTIFCONVERTPRINTER
   ${EndIf}
 SectionEnd
 
+
 SectionGroupEnd ; End SectionGroup "Compass Forms"
+
 
 SectionGroupEnd ; End SectionGroup "Compass Client"
 
-Section "Compass Capture Kiosk Icon" SECCAPTUREKIOSKICON
+
+
+
+
+; These commands are run when the Install button is clicked in the setup wizard if the section is selected on the components page
+Section "Compass Capture Kiosk Desktop Shortcut" SECCAPTUREKIOSKICON
   ; Set installation directory back to the installation directory chosen in the setup wizard
   SetOutPath "$INSTDIR"
   File "Resources\CompassPilot.ico"
 
   ; Create the Desktop shortcut
   !insertmacro CreateInternetShortcut "$DESKTOP\Compass Capture Kiosk" "$CompassClickOnceProtocol$CompassClickOnceURL?AppID=10&action=kiosk" "$INSTDIR\CompassPilot.ico" "0"
+SectionEnd
+
+
+
+; These commands are run when the Install button is clicked in the setup wizard if the section is selected on the components page
+Section "Compass Capture Kiosk Start Menu Shortcut" SECCAPTUREKIOSKSMICON
+  ; Set installation directory back to the installation directory chosen in the setup wizard
+  SetOutPath "$INSTDIR"
+  File "Resources\CompassPilot.ico"
+
   ; Create the Start Menu shortcut
   CreateDirectory "$SMPROGRAMS\Compass Pilot"
   !insertmacro CreateInternetShortcut "$SMPROGRAMS\Compass Pilot\Compass Capture Kiosk" "$CompassClickOnceProtocol$CompassClickOnceURL?AppID=10&action=kiosk" "$INSTDIR\CompassPilot.ico" "0"
 SectionEnd
 
-Section "Compass Self-Scan Kiosk Icon" SECSELFSCANKIOSKICON
+
+
+; These commands are run when the Install button is clicked in the setup wizard if the section is selected on the components page
+Section "Compass Self-Scan Kiosk Desktop Shortcut" SECSELFSCANKIOSKICON
   ; Set installation directory back to the installation directory chosen in the setup wizard
   SetOutPath "$INSTDIR"
   File "Resources\CompassPilot.ico"
 
   ; Create the Desktop shortcut
   !insertmacro CreateInternetShortcut "$DESKTOP\Compass Self-Scan Kiosk" "$CompassClickOnceProtocol$CompassClickOnceURL?AppID=20&action=kiosk" "$INSTDIR\CompassPilot.ico" "0"
+SectionEnd
+
+
+
+; These commands are run when the Install button is clicked in the setup wizard if the section is selected on the components page
+Section "Compass Self-Scan Kiosk Start Menu Shortcut" SECSELFSCANKIOSKSMICON
+  ; Set installation directory back to the installation directory chosen in the setup wizard
+  SetOutPath "$INSTDIR"
+  File "Resources\CompassPilot.ico"
+
   ; Create the Start Menu shortcut
   CreateDirectory "$SMPROGRAMS\Compass Pilot"
   !insertmacro CreateInternetShortcut "$SMPROGRAMS\Compass Pilot\Compass Self-Scan Kiosk" "$CompassClickOnceProtocol$CompassClickOnceURL?AppID=20&action=kiosk" "$INSTDIR\CompassPilot.ico" "0"
@@ -363,6 +418,7 @@ SectionEnd
 
 
 
+; These commands are run when the Install button is clicked in the setup wizard if the section is selected on the components page
 Section "Northwoods Website Icon" SECNORTHWOODSICON
   ; Create the Start Menu shortcut
   CreateDirectory "$SMPROGRAMS\Compass Pilot"
@@ -393,11 +449,14 @@ SectionEnd
 
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
+  !insertmacro MUI_DESCRIPTION_TEXT ${SECCOMPASSSMICON} $(DESC_COMPASS_SMICON)
   !insertmacro MUI_DESCRIPTION_TEXT ${SECCOMPASSICON} $(DESC_COMPASS_ICON)
   !insertmacro MUI_DESCRIPTION_TEXT ${SECLEADTOOLSDLLS} $(DESC_LEADTOOLS_DLLS)
   !insertmacro MUI_DESCRIPTION_TEXT ${SECFORMSPRINTER} $(DESC_FORMS_PRINTER)
   !insertmacro MUI_DESCRIPTION_TEXT ${SECTIFCONVERTPRINTER} $(DESC_TIFCONVERT_PRINTER)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SECCAPTUREKIOSKSMICON} $(DESC_CAPTURE_KIOSK_SMICON)
   !insertmacro MUI_DESCRIPTION_TEXT ${SECCAPTUREKIOSKICON} $(DESC_CAPTURE_KIOSK_ICON)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SECSELFSCANKIOSKSMICON} $(DESC_SELF_SCAN_KIOSK_SMICON)
   !insertmacro MUI_DESCRIPTION_TEXT ${SECSELFSCANKIOSKICON} $(DESC_SELF_SCAN_KIOSK_ICON)
   !insertmacro MUI_DESCRIPTION_TEXT ${SECNORTHWOODSICON} $(DESC_NORTHWOODS_ICON)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
@@ -466,6 +525,10 @@ Function .onInit
     ${If} $CompassPrintServer == ""
 	  StrCpy $CompassPrintServer "" ; default to blank if omitted
     ${EndIf}
+    ReadIniStr $InstallCompassClientSMIcon "$AnswerFilePath" "Features" "InstallCompassClientSMIcon"
+    ${If} $InstallCompassClientSMIcon == ""
+	  StrCpy $InstallCompassClientSMIcon "False" ; default to false if omitted
+    ${EndIf}
     ReadIniStr $InstallCompassClientIcon "$AnswerFilePath" "Features" "InstallCompassClientIcon"
     ${If} $InstallCompassClientIcon == ""
 	  StrCpy $InstallCompassClientIcon "False" ; default to false if omitted
@@ -482,9 +545,17 @@ Function .onInit
     ${If} $InstallTifconvertPrinter == ""
 	  StrCpy $InstallTifconvertPrinter "False" ; default to false if omitted
     ${EndIf}
+    ReadIniStr $InstallCaptureKioskSMIcon "$AnswerFilePath" "Features" "InstallCaptureKioskSMIcon"
+    ${If} $InstallCaptureKioskSMIcon == ""
+	  StrCpy $InstallCaptureKioskSMIcon "False" ; default to false if omitted
+    ${EndIf}
     ReadIniStr $InstallCaptureKioskIcon "$AnswerFilePath" "Features" "InstallCaptureKioskIcon"
     ${If} $InstallCaptureKioskIcon == ""
 	  StrCpy $InstallCaptureKioskIcon "False" ; default to false if omitted
+    ${EndIf}
+    ReadIniStr $InstallSelfScanKioskSMIcon "$AnswerFilePath" "Features" "InstallSelfScanKioskSMIcon"
+    ${If} $InstallSelfScanKioskSMIcon == ""
+	  StrCpy $InstallSelfScanKioskSMIcon "False" ; default to false if omitted
     ${EndIf}
     ReadIniStr $InstallSelfScanKioskIcon "$AnswerFilePath" "Features" "InstallSelfScanKioskIcon"
     ${If} $InstallSelfScanKioskIcon == ""
@@ -513,10 +584,15 @@ Function .onInit
     StrCpy "$ClearClickOnceCache" "${CLEAR_CLICKONCE_CACHE}"
   ${EndIf}
   
-  
 
   ; Set which features should be selected by default on the Components page
   ; either from the compiled in constans or from the answer file if present
+  ${If} $InstallCompassClientSMIcon == "True"
+	!insertmacro SelectSection ${SECCOMPASSSMICON}
+  ${ElseIf} $InstallCompassClientSMIcon == "False"
+	!insertmacro UnselectSection ${SECCOMPASSSMICON}
+  ${EndIf}
+
   ${If} $InstallCompassClientIcon == "True"
 	!insertmacro SelectSection ${SECCOMPASSICON}
   ${ElseIf} $InstallCompassClientIcon == "False"
@@ -541,12 +617,24 @@ Function .onInit
 	!insertmacro UnselectSection ${SECTIFCONVERTPRINTER}
   ${EndIf}
 
+  ${If} $InstallCaptureKioskSMIcon == "True"
+	!insertmacro SelectSection ${SECCAPTUREKIOSKSMICON}
+  ${ElseIf} $InstallCaptureKioskSMIcon == "False"
+	!insertmacro UnselectSection ${SECCAPTUREKIOSKSMICON}
+  ${EndIf}
+  
   ${If} $InstallCaptureKioskIcon == "True"
 	!insertmacro SelectSection ${SECCAPTUREKIOSKICON}
   ${ElseIf} $InstallCaptureKioskIcon == "False"
 	!insertmacro UnselectSection ${SECCAPTUREKIOSKICON}
   ${EndIf}
 
+  ${If} $InstallSelfScanKioskSMIcon == "True"
+	!insertmacro SelectSection ${SECSELFSCANKIOSKSMICON}
+  ${ElseIf} $InstallSelfScanKioskSMIcon == "False"
+	!insertmacro UnselectSection ${SECSELFSCANKIOSKSMICON}
+  ${EndIf}
+  
   ${If} $InstallSelfScanKioskIcon == "True"
 	!insertmacro SelectSection ${SECSELFSCANKIOSKICON}
   ${ElseIf} $InstallSelfScanKioskIcon == "False"
@@ -654,8 +742,11 @@ FunctionEnd
 Function RequireOneComponent
   ; Add code here to ensure that at least one component is selected
   ; before leaving the features page.  Make sure it works with silent installs!
-  SectionGetFlags "${SECCOMPASSICON}" $0
+  SectionGetFlags "${SECCOMPASSSMICON}" $0
   IntOp $1 $0 & ${SF_SELECTED}
+  SectionGetFlags "${SECCOMPASSICON}" $0
+  IntOp $0 $0 & ${SF_SELECTED}
+  IntOp $1 $1 + $0
   SectionGetFlags "${SECLEADTOOLSDLLS}" $0
   IntOp $0 $0 & ${SF_SELECTED}
   IntOp $1 $1 + $0
@@ -665,10 +756,19 @@ Function RequireOneComponent
   SectionGetFlags "${SECTIFCONVERTPRINTER}" $0
   IntOp $0 $0 & ${SF_SELECTED}
   IntOp $1 $1 + $0
+  SectionGetFlags "${SECCAPTUREKIOSKSMICON}" $0
+  IntOp $0 $0 & ${SF_SELECTED}
+  IntOp $1 $1 + $0
   SectionGetFlags "${SECCAPTUREKIOSKICON}" $0
   IntOp $0 $0 & ${SF_SELECTED}
   IntOp $1 $1 + $0
+  SectionGetFlags "${SECSELFSCANKIOSKSMICON}" $0
+  IntOp $0 $0 & ${SF_SELECTED}
+  IntOp $1 $1 + $0
   SectionGetFlags "${SECSELFSCANKIOSKICON}" $0
+  IntOp $0 $0 & ${SF_SELECTED}
+  IntOp $1 $1 + $0
+  SectionGetFlags "${SECNORTHWOODSICON}" $0
   IntOp $0 $0 & ${SF_SELECTED}
   IntOp $1 $1 + $0
   StrCmp $1 "0" 0 +3
