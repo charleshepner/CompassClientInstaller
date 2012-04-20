@@ -8,9 +8,9 @@ InstallCompassClientIcon=True
 InstallLEADTOOLSDLLs=True
 InstallFormsPrinter=True
 InstallTifconvertPrinter=False
-InstallCaptureKioskSMIcon=True
+InstallCaptureKioskSMIcon=False
 InstallCaptureKioskIcon=False
-InstallSelfScanKioskSMIcon=True
+InstallSelfScanKioskSMIcon=False
 InstallSelfScanKioskIcon=False
 InstallNorthwoodsIcon=True
 [Options]
