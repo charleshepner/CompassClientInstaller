@@ -517,63 +517,69 @@ Function .onInit
 
   AnswerFileProvided:
   ; If an answer file is provided, read the values out of it into the configuration variables
-  ; If any of the values were omitted from the answerfile default that value to false
+  ; If any of the values were omitted from the answerfile or are not proper values, default that value to false
   ${If} ${FileExists} "$AnswerFilePath"
     ReadIniStr $CompassClickOnceProtocol "$AnswerFilePath" "Settings" "CompassClickOnceProtocol"
-    ${If} $CompassClickOnceProtocol == ""
-	  StrCpy $CompassClickOnceProtocol "http://" ; default to http if omitted
+    ${If} $CompassClickOnceProtocol != "http://"
+	${AndIf} $CompassClickOnceProtocol != "https://"
+	  StrCpy $CompassClickOnceProtocol "http://"
     ${EndIf}
     ReadIniStr $CompassClickOnceURL "$AnswerFilePath" "Settings" "CompassClickOnceURL"
-    ${If} $CompassClickOnceURL == ""
-	  StrCpy $CompassClickOnceURL "" ; default to blank if omitted
-    ${EndIf}
     ReadIniStr $CompassPrintServer "$AnswerFilePath" "Settings" "CompassPrintServer"
-    ${If} $CompassPrintServer == ""
-	  StrCpy $CompassPrintServer "" ; default to blank if omitted
-    ${EndIf}
     ReadIniStr $InstallCompassClientSMIcon "$AnswerFilePath" "Features" "InstallCompassClientSMIcon"
-    ${If} $InstallCompassClientSMIcon == ""
-	  StrCpy $InstallCompassClientSMIcon "False" ; default to false if omitted
+    ${If} $InstallCompassClientSMIcon != "True"
+	${AndIf} $InstallCompassClientSMIcon != "False"
+	  StrCpy $InstallCompassClientSMIcon "False"
     ${EndIf}
     ReadIniStr $InstallCompassClientIcon "$AnswerFilePath" "Features" "InstallCompassClientIcon"
-    ${If} $InstallCompassClientIcon == ""
-	  StrCpy $InstallCompassClientIcon "False" ; default to false if omitted
+    ${If} $InstallCompassClientIcon != "True"
+    ${AndIf} $InstallCompassClientIcon != "False"
+	  StrCpy $InstallCompassClientIcon "False"
     ${EndIf}
     ReadIniStr $InstallLEADTOOLSDLLs "$AnswerFilePath" "Features" "InstallLEADTOOLSDLLs"
-    ${If} $InstallLEADTOOLSDLLs == ""
-	  StrCpy $InstallLEADTOOLSDLLs "False" ; default to false if omitted
+    ${If} $InstallLEADTOOLSDLLs != "True"
+    ${AndIf} $InstallLEADTOOLSDLLs != "False"
+	  StrCpy $InstallLEADTOOLSDLLs "False"
     ${EndIf}
     ReadIniStr $InstallFormsPrinter "$AnswerFilePath" "Features" "InstallFormsPrinter"
-    ${If} $InstallFormsPrinter == ""
-	  StrCpy $InstallFormsPrinter "False" ; default to false if omitted
+    ${If} $InstallFormsPrinter != "True"
+    ${AndIf} $InstallFormsPrinter != "False"
+	  StrCpy $InstallFormsPrinter "False"
     ${EndIf}
     ReadIniStr $InstallTifconvertPrinter "$AnswerFilePath" "Features" "InstallTifconvertPrinter"
-    ${If} $InstallTifconvertPrinter == ""
-	  StrCpy $InstallTifconvertPrinter "False" ; default to false if omitted
+    ${If} $InstallTifconvertPrinter != "True"
+    ${AndIf} $InstallTifconvertPrinter != "False"
+	  StrCpy $InstallTifconvertPrinter "False"
     ${EndIf}
     ReadIniStr $InstallCaptureKioskSMIcon "$AnswerFilePath" "Features" "InstallCaptureKioskSMIcon"
-    ${If} $InstallCaptureKioskSMIcon == ""
-	  StrCpy $InstallCaptureKioskSMIcon "False" ; default to false if omitted
+    ${If} $InstallCaptureKioskSMIcon != "True"
+    ${AndIf} $InstallCaptureKioskSMIcon != "False"
+	  StrCpy $InstallCaptureKioskSMIcon "False"
     ${EndIf}
     ReadIniStr $InstallCaptureKioskIcon "$AnswerFilePath" "Features" "InstallCaptureKioskIcon"
-    ${If} $InstallCaptureKioskIcon == ""
-	  StrCpy $InstallCaptureKioskIcon "False" ; default to false if omitted
+    ${If} $InstallCaptureKioskIcon != "True"
+    ${AndIf} $InstallCaptureKioskIcon != "False"
+	  StrCpy $InstallCaptureKioskIcon "False"
     ${EndIf}
     ReadIniStr $InstallSelfScanKioskSMIcon "$AnswerFilePath" "Features" "InstallSelfScanKioskSMIcon"
-    ${If} $InstallSelfScanKioskSMIcon == ""
-	  StrCpy $InstallSelfScanKioskSMIcon "False" ; default to false if omitted
+    ${If} $InstallSelfScanKioskSMIcon != "True"
+    ${AndIf} $InstallSelfScanKioskSMIcon != "False"
+	  StrCpy $InstallSelfScanKioskSMIcon "False"
     ${EndIf}
     ReadIniStr $InstallSelfScanKioskIcon "$AnswerFilePath" "Features" "InstallSelfScanKioskIcon"
-    ${If} $InstallSelfScanKioskIcon == ""
-	  StrCpy $InstallSelfScanKioskIcon "False" ; default to false if omitted
+    ${If} $InstallSelfScanKioskIcon != "True"
+    ${AndIf} $InstallSelfScanKioskIcon != "False"
+	  StrCpy $InstallSelfScanKioskIcon "False"
     ${EndIf}
     ReadIniStr $InstallNorthwoodsIcon "$AnswerFilePath" "Features" "InstallNorthwoodsIcon"
-    ${If} $InstallNorthwoodsIcon == ""
-	  StrCpy $InstallNorthwoodsIcon "False" ; default to false if omitted
+    ${If} $InstallNorthwoodsIcon != "True"
+    ${AndIf} $InstallNorthwoodsIcon != "False"
+	  StrCpy $InstallNorthwoodsIcon "False"
     ${EndIf}
     ReadIniStr $ClearClickOnceCache "$AnswerFilePath" "Options" "ClearClickOnceCache"
-    ${If} $ClearClickOnceCache == ""
-	  StrCpy $ClearClickOnceCache "False" ; default to false if omitted
+    ${If} $ClearClickOnceCache != "True"
+    ${AndIf} $ClearClickOnceCache != "False"
+	  StrCpy $ClearClickOnceCache "False"
     ${EndIf}
   ${Else}
   ; If we get here, no answer file was provided so read the compiled in constants into the variables for configuration
