@@ -319,9 +319,9 @@ Section "Forms Printer" SECFORMSPRINTER
   ; Install a printer using the path to the printer management vbscripts on Windows XP machines
   ${If} ${IsWinXP}
     DetailPrint "Windows XP detected."
-    DetailPrint "Installing FORMS Printer Port."
+    DetailPrint "Installing Compass Forms Printer Port."
     nsExec::Exec 'cscript C:\Windows\System32\prnport.vbs -a -r ${FORMS_PORT_NAME} -h $CompassPrintServer -q ${FORMS_PORT_QUEUE} -o lpr -n 515 -2e -md'
-    DetailPrint "Installing FORMS Printer."
+    DetailPrint "Installing Compass Forms Printer."
     nsExec::Exec 'cscript C:\Windows\System32\prnmngr.vbs -a -p "${FORMS_PRINTER_NAME}" -m "${PRINTER_DRIVER32}" -r "${FORMS_PORT_NAME}"'
   ${EndIf}
 
@@ -590,7 +590,9 @@ Function .onInit
     StrCpy "$InstallLEADTOOLSDLLs" "${INSTALL_LEADTOOLSDLLS}"
     StrCpy "$InstallFormsPrinter" "${INSTALL_FORMSPRINTER}"
     StrCpy "$InstallTifconvertPrinter" "${INSTALL_TIFCONVERTPRINTER}"
+    StrCpy "$InstallCaptureKioskSMIcon" "${INSTALL_CAPTUREKIOSK_SMICON}"
     StrCpy "$InstallCaptureKioskIcon" "${INSTALL_CAPTUREKIOSK_ICON}"
+    StrCpy "$InstallSelfScanKioskSMIcon" "${INSTALL_SELFSCANKIOSK_SMICON}"
     StrCpy "$InstallSelfScanKioskIcon" "${INSTALL_SELFSCANKIOSK_ICON}"
     StrCpy "$InstallNorthwoodsIcon" "${INSTALL_NORTHWOODS_ICON}"
     StrCpy "$ClearClickOnceCache" "${CLEAR_CLICKONCE_CACHE}"
