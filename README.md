@@ -134,7 +134,19 @@ ClearClickOnceCache=True
 ```
   
 If the answer file is present and the installer is run interactively, the installer will use the values from the answer file in the wizard as the defaults instead of the compiled in default values (e.g. [CompassClickOnceServer]/compassframework/compassapi.application and [CompassPrintServer]).
-  
+
+## Screenshots
+
+![Welcome Page](http://charleshepner.files.wordpress.com/2012/04/installer-welcome.png)
+
+![Features Page](http://charleshepner.files.wordpress.com/2012/04/installer-features.png)
+
+![Directory Page](http://charleshepner.files.wordpress.com/2012/04/installer-directory.png)
+
+![Settings Page](http://charleshepner.files.wordpress.com/2012/04/installer-settings.png)
+
+![Parameters](http://charleshepner.files.wordpress.com/2012/04/installer-parameters.png)
+
 ## Developing
 
 In order to develop this installer, see the following pre-requisites:
