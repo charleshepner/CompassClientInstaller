@@ -372,10 +372,10 @@ SectionGroup "Compass Capture Kiosk"
 Section "Desktop Shortcut" SECCAPTUREKIOSKICON
   ; Set installation directory back to the installation directory chosen in the setup wizard
   SetOutPath "$INSTDIR"
-  File "Resources\CompassPilot.ico"
+  File "Resources\CompassCapture.ico"
 
   ; Create the Desktop shortcut
-  !insertmacro CreateInternetShortcut "$DESKTOP\Compass Capture Kiosk" "$CompassClickOnceProtocol$CompassClickOnceURL?AppID=10&action=kiosk" "$INSTDIR\CompassPilot.ico" "0"
+  !insertmacro CreateInternetShortcut "$DESKTOP\Compass Capture Kiosk" "$CompassClickOnceProtocol$CompassClickOnceURL?AppID=10&action=kiosk" "$INSTDIR\CompassCapture.ico" "0"
 SectionEnd
 
 
@@ -384,11 +384,11 @@ SectionEnd
 Section "Start Menu Shortcut" SECCAPTUREKIOSKSMICON
   ; Set installation directory back to the installation directory chosen in the setup wizard
   SetOutPath "$INSTDIR"
-  File "Resources\CompassPilot.ico"
+  File "Resources\CompassCapture.ico"
 
   ; Create the Start Menu shortcut
   CreateDirectory "$SMPROGRAMS\Compass Pilot"
-  !insertmacro CreateInternetShortcut "$SMPROGRAMS\Compass Pilot\Compass Capture Kiosk" "$CompassClickOnceProtocol$CompassClickOnceURL?AppID=10&action=kiosk" "$INSTDIR\CompassPilot.ico" "0"
+  !insertmacro CreateInternetShortcut "$SMPROGRAMS\Compass Pilot\Compass Capture Kiosk" "$CompassClickOnceProtocol$CompassClickOnceURL?AppID=10&action=kiosk" "$INSTDIR\CompassCapture.ico" "0"
 SectionEnd
 
 SectionGroupEnd ;End Compass Capture Kiosk section
@@ -401,10 +401,10 @@ SectionGroup "Compass Self Scan Kiosk"
 Section "Desktop Shortcut" SECSELFSCANKIOSKICON
   ; Set installation directory back to the installation directory chosen in the setup wizard
   SetOutPath "$INSTDIR"
-  File "Resources\CompassPilot.ico"
+  File "Resources\SelfScanKiosk.ico"
 
   ; Create the Desktop shortcut
-  !insertmacro CreateInternetShortcut "$DESKTOP\Compass Self-Scan Kiosk" "$CompassClickOnceProtocol$CompassClickOnceURL?AppID=20&action=kiosk" "$INSTDIR\CompassPilot.ico" "0"
+  !insertmacro CreateInternetShortcut "$DESKTOP\Compass Self-Scan Kiosk" "$CompassClickOnceProtocol$CompassClickOnceURL?AppID=20&action=kiosk" "$INSTDIR\SelfScanKiosk.ico" "0"
 SectionEnd
 
 
@@ -413,11 +413,11 @@ SectionEnd
 Section "Start Menu Shortcut" SECSELFSCANKIOSKSMICON
   ; Set installation directory back to the installation directory chosen in the setup wizard
   SetOutPath "$INSTDIR"
-  File "Resources\CompassPilot.ico"
+  File "Resources\SelfScanKiosk.ico"
 
   ; Create the Start Menu shortcut
   CreateDirectory "$SMPROGRAMS\Compass Pilot"
-  !insertmacro CreateInternetShortcut "$SMPROGRAMS\Compass Pilot\Compass Self-Scan Kiosk" "$CompassClickOnceProtocol$CompassClickOnceURL?AppID=20&action=kiosk" "$INSTDIR\CompassPilot.ico" "0"
+  !insertmacro CreateInternetShortcut "$SMPROGRAMS\Compass Pilot\Compass Self-Scan Kiosk" "$CompassClickOnceProtocol$CompassClickOnceURL?AppID=20&action=kiosk" "$INSTDIR\SelfScanKiosk.ico" "0"
 SectionEnd
 
 SectionGroupEnd ; End Compass Self Scan Kiosk section
