@@ -256,6 +256,11 @@ Section "-Pre"
     DetailPrint "Clearing Microsoft ClickOnce Cache."
 	nsExec::Exec 'rundll32 C:\Windows\System32\dfshim.dll CleanOnlineAppCache'
   ${EndIf}
+
+  ; Place this icon so it is available for the entry in Add/Remove Programs
+  ; even if the Compass Client features is not chosen
+  SetOutPath "$INSTDIR"
+  File "Resources\CompassPilot.ico"
 SectionEnd
 
 
