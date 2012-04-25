@@ -496,7 +496,7 @@ Function .onInit
 	or Cancel to abort this installation." /SD IDOK IDOK +2
 	Abort
 	; Uninstall the previous version
-	nsExec::Exec "$UninstallerPath /S"
+	nsExec::Exec '"$UninstallerPath" /S _?=$INSTDIR'
   ${EndIf}
 
 
@@ -833,6 +833,8 @@ Section Uninstall
   ; Delete all the files deployed by the installer
   Delete "$INSTDIR\uninst.exe"
   Delete "$INSTDIR\CompassPilot.ico"
+  Delete "$INSTDIR\CompassCapture.ico"
+  Delete "$INSTDIR\SelfScanKiosk.ico"
   Delete "$INSTDIR\install.log"
   Delete "$DLL_INSTALL_PATH\Ltbar7w15u.dll"
   Delete "$DLL_INSTALL_PATH\Ltbar7r15u.dll"
