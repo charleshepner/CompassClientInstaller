@@ -137,15 +137,23 @@ If the answer file is present and the installer is run interactively, the instal
 
 ## Screenshots
 
-![Welcome Page](http://charleshepner.files.wordpress.com/2012/04/installer-welcome.png)
+![Welcome Page](http://charleshepner.files.wordpress.com/2012/04/installer-welcome1.png)
 
-![Features Page](http://charleshepner.files.wordpress.com/2012/04/installer-features.png)
+![Features Page](http://charleshepner.files.wordpress.com/2012/04/installer-components.png)
 
-![Directory Page](http://charleshepner.files.wordpress.com/2012/04/installer-directory.png)
+![Directory Page](http://charleshepner.files.wordpress.com/2012/04/installer-directory1.png)
 
-![Settings Page](http://charleshepner.files.wordpress.com/2012/04/installer-settings.png)
+![Settings Page](http://charleshepner.files.wordpress.com/2012/04/installer-settings1.png)
 
-![Parameters](http://charleshepner.files.wordpress.com/2012/04/installer-parameters.png)
+![DotNet Prompt](http://charleshepner.files.wordpress.com/2012/04/installer-dotnet-prompt.png)
+
+![DotNet Install](http://charleshepner.files.wordpress.com/2012/04/installer-dotnet.png)
+
+![Complete Page](http://charleshepner.files.wordpress.com/2012/04/installer-complete.png)
+
+![Finish Page](http://charleshepner.files.wordpress.com/2012/04/installer-finish.png)
+
+![Parameters](http://charleshepner.files.wordpress.com/2012/04/installer-parameters1.png)
 
 ## Developing
 
