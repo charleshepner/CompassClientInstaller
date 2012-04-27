@@ -14,6 +14,7 @@ This installer deploys the client-side components needed to launch and run Compa
 * Tifconvert Printer
 * Desktop Shortcuts
 * Start Menu Shortcuts
+* Trusted sites
 * Northwoods Website Start Menu Shortcut
 
 ## Features
@@ -51,6 +52,7 @@ Three customizable settings appear after the install location is chosen.
 * The protocol used to download the Compass ClickOnce client (default http://)
 * The URL used to download the Compass ClickOnce client (default [CompassClickOnceServer]/compassframework/compassapi.application)
 * The network name of the print server for the Compass solution (default [CompassPrintServer])
+* The network name of the application server for the Compass solution (default [CompassApplicationServer])
 
 The Compass ClickOnce client can be delivered over http or https, selectable from a drop-down (the server must be configured appropriately for https).  For the URL used to download the Compass ClickOnce client, the text [CompassClickOnceServer] should be replaced by the network or DNS name of the server where the Compass ClickOnce Client will be deployed from (e.g. server01).  This URL is used for the Compass Client shortcuts placed on the desktop and in the Start Menu. Finally, the text [CompassPrintServer] should be replaced by the network or DNS name of the server where print jobs should be sent.  This server name is used when the local printers are created.
 
@@ -75,6 +77,9 @@ Answer.txt is formatted in the INI file format.  It has two sections [Settings] 
 * CompassPrintServer
   * Possible values: the network or DNS name of the print server (for virtual printing) where RPM is installed
   * e.g. printserver01
+* CompassApplicationServer
+  * Possible values: the network or DNS name of the application server where Compass Pilot is installed
+  * e.g. appserver01  
 
 **Features** controls which of the corresponding features are selected on the components page of the wizard
 
@@ -107,6 +112,8 @@ Answer.txt is formatted in the INI file format.  It has two sections [Settings] 
   * Possible values: True or False
 * InstallNorthwoodsIcon
   * Possible values: True or False
+* InstallTrustedSites
+  * Possible values: True or False  
 
 **Options** controls optional behavior of the installer
 
@@ -121,6 +128,7 @@ Example answer file:
 CompassClickOnceProtocol=https://
 CompassClickOnceURL=appserver01/compassframework/compassapi.application
 CompassPrintServer=printserver01
+CompassApplicationServer=appserver01
 [Features]
 InstallCompassClientSMIcon=True
 InstallCompassClientIcon=True
@@ -132,6 +140,7 @@ InstallCaptureKioskIcon=False
 InstallSelfScanKioskSMIcon=True
 InstallSelfScanKioskIcon=False
 InstallNorthwoodsIcon=True
+InstallTrustedSites=True
 [Options]
 ClearClickOnceCache=True
 ```
