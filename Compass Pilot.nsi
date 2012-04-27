@@ -10,13 +10,15 @@
 ; These constants are used to name and version the installer
 ; and for display in the Add/Remove dialog in Windows
 !define PRODUCT_NAME "Compass Client Components"
-!define PRODUCT_VERSION "2012.04.20"
+!define PRODUCT_VERSION "2012.04.27"
 !define PRODUCT_PUBLISHER "Northwoods"
 !define PRODUCT_WEB_SITE "http://www.teamnorthwoods.com"
 !define PRODUCT_HELP_SITE "http://www.teamnorthwoods.com/contact/support-center/"
 !define PRODUCT_HELP_PHONE "1 (866) 424-7800"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
+!define PRODUCT_REG_KEY "Software\${PRODUCT_NAME}"
+!define PRODUCT_REG_ROOT_KEY "HKLM"
 !define PRODUCT_SIZE_KB 340
 
 
@@ -54,9 +56,12 @@ Var hCtl_customsettings_GroupBox1
 Var hCtl_customsettings_TextBox1
 Var hCtl_customsettings_DropList1
 Var hCtl_customsettings_GroupBox2
+Var hCtl_customsettings_GroupBox3
 Var hCtl_customsettings_TextBox2
+Var hCtl_customsettings_TextBox3
 Var hCtl_customsettings_Label1
 Var hCtl_customsettings_Label2
+Var hCtl_customsettings_label3
 ; Call the function fnc_customsettings_Show to insert the custom page
 Page custom fnc_customsettings_Show
 ; End Custom settings page ------
@@ -88,6 +93,7 @@ LangString DESC_CAPTURE_KIOSK_ICON ${LANG_ENGLISH} "Create Desktop shortcut for 
 LangString DESC_SELF_SCAN_KIOSK_SMICON ${LANG_ENGLISH} "Create Start Menu shortcut for the Self Scan Kiosk"
 LangString DESC_SELF_SCAN_KIOSK_ICON ${LANG_ENGLISH} "Create Desktop shortcut for the Self Scan Kiosk"
 LangString DESC_NORTHWOODS_ICON ${LANG_ENGLISH} "Create Start Menu shortcut for the Northwoods website"
+LangString DESC_TRUSTED_SITES ${LANG_ENGLISH} "Create registry entry for the trusted sites location of the application server"
 
 
 ; Includes ------
@@ -148,6 +154,7 @@ LangString DESC_NORTHWOODS_ICON ${LANG_ENGLISH} "Create Start Menu shortcut for 
 ; If an answer file is available, the values from it will be copied in the variables and used for configuration instead of these constants.
 ; Mixing and matching is not supported at this time.
 !define COMPASS_CLICKONCE_PROTOCOL "http://"
+!define COMPASS_APPLICATION_SERVER "[CompassApplicationServer]"
 !define COMPASS_CLICKONCE_URL "[CompassClickOnceServer]/compassframework/compassapi.application"
 !define COMPASS_PRINT_SERVER "[CompassPrintServer]"
 !define INSTALL_COMPASSCLIENT_SMICON "True"
@@ -203,6 +210,7 @@ Section "-Pre"
   
   Var /global AnswerFilePath
   Var /global CompassClickOnceProtocol
+  Var /global CompassApplicationServer
   Var /global CompassClickOnceURL
   Var /global CompassPrintServer
   Var /global InstallCompassClientSMIcon
@@ -230,6 +238,7 @@ Section "-Pre"
   ${If} "$AnswerFilePath" != ""
     DetailPrint "Answer file - CompassClickOnceProtocol: $CompassClickOnceProtocol"
     DetailPrint "Answer file - CompassClickOnceURL: $CompassClickOnceURL"
+    DetailPrint "Answer file - CompassApplicationServer: $CompassApplicationServer"
     DetailPrint "Answer file - CompassPrintServer: $CompassPrintServer"
     DetailPrint "Answer file - InstallCompassClientSMIcon: $InstallCompassClientSMIcon"
     DetailPrint "Answer file - InstallCompassClientIcon: $InstallCompassClientIcon"
@@ -296,7 +305,6 @@ SectionEnd
 
 
 
-
 SectionGroup /e "Compass Forms"
 
 ; These commands are run when the Install button is clicked in the setup wizard if the section is selected on the components page
@@ -333,9 +341,9 @@ Section "Forms Printer" SECFORMSPRINTER
   ; Install a printer using the path to the printer management vbscripts on Windows Vista or higher machines
   ${If} ${AtLeastWinVista}
     DetailPrint "Windows Vista or Higher Detected."
-    DetailPrint "Installing Compass Forms Printer Port"
+    DetailPrint "Installing Compass Forms Printer Port."
     nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnport.vbs -a -r ${FORMS_PORT_NAME} -h $CompassPrintServer -q ${FORMS_PORT_QUEUE} -o lpr -n 515 -2e -md'
-    DetailPrint "Installing Compass Forms Printer"
+    DetailPrint "Installing Compass Forms Printer."
     nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnmngr.vbs -a -p "${FORMS_PRINTER_NAME}" -m "${PRINTER_DRIVER64}" -r "${FORMS_PORT_NAME}"'
   ${EndIf}
 SectionEnd
@@ -347,18 +355,18 @@ Section "Tifconvert Printer" SECTIFCONVERTPRINTER
   ; Install a printer using the path to the printer management vbscripts on Windows XP machines
   ${If} ${IsWinXP}
     DetailPrint "Windows XP detected."
-    DetailPrint "Installing Tifconvert Printer Port"
+    DetailPrint "Installing Tifconvert Printer Port."
     nsExec::Exec 'cscript C:\Windows\System32\prnport.vbs -a -r ${TIFCONVERT_PORT_NAME} -h $CompassPrintServer -q ${TIFCONVERT_PORT_QUEUE} -o lpr -n 515 -2e -md'
-    DetailPrint "Installing Tifconvert Printer"
+    DetailPrint "Installing Tifconvert Printer."
     nsExec::Exec 'cscript C:\Windows\System32\prnmngr.vbs -a -p "${TIFCONVERT_PRINTER_NAME}" -m "${PRINTER_DRIVER32}" -r "${TIFCONVERT_PORT_NAME}"'
   ${EndIf}
 
   ; Install printers using the path to the printer management vbscripts on Windows Vista or higher machines
   ${If} ${AtLeastWinVista}
     DetailPrint "Windows Vista or Higher Detected."
-    DetailPrint "Installing Tifconvert Printer Port"
+    DetailPrint "Installing Tifconvert Printer Port."
     nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnport.vbs -a -r ${TIFCONVERT_PORT_NAME} -h $CompassPrintServer -q ${TIFCONVERT_PORT_QUEUE} -o lpr -n 515 -2e -md'
-    DetailPrint "Installing Tifconvert Printer"
+    DetailPrint "Installing Tifconvert Printer."
     nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnmngr.vbs -a -p "${TIFCONVERT_PRINTER_NAME}" -m "${PRINTER_DRIVER64}" -r "${TIFCONVERT_PORT_NAME}"'
   ${EndIf}
 SectionEnd
@@ -366,9 +374,14 @@ SectionEnd
 
 SectionGroupEnd ; End SectionGroup "Compass Forms"
 
+; Add the application server location to the Internet Explorer trusted sites in the registry
+Section "Trusted Sites" SECTRUSTEDSITES
+   DetailPrint "Installing trusted sites."
+   WriteRegDWORD   HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains\$CompassApplicationServer" "http" "0x00000002"
+   WriteRegDWORD   HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains\$CompassApplicationServer" "file" "0x00000002"
+SectionEnd
 
 SectionGroupEnd ; End SectionGroup "Compass Client"
-
 
 
 SectionGroup "Compass Capture Kiosk"
@@ -452,9 +465,9 @@ Section -Post
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\CompassPilot.ico"
   WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "EstimatedSize" 340
+  ;Write application server value to registry so it can be retrieved from the uninstall later
+  WriteRegStr ${PRODUCT_REG_ROOT_KEY} "${PRODUCT_REG_KEY}" "CompassApplicationServer" "$CompassApplicationServer"
 SectionEnd
-
-
 
 
 
@@ -470,6 +483,7 @@ SectionEnd
   !insertmacro MUI_DESCRIPTION_TEXT ${SECSELFSCANKIOSKSMICON} $(DESC_SELF_SCAN_KIOSK_SMICON)
   !insertmacro MUI_DESCRIPTION_TEXT ${SECSELFSCANKIOSKICON} $(DESC_SELF_SCAN_KIOSK_ICON)
   !insertmacro MUI_DESCRIPTION_TEXT ${SECNORTHWOODSICON} $(DESC_NORTHWOODS_ICON)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SECTRUSTEDSITES} $(DESC_TRUSTED_SITES)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 
@@ -529,6 +543,7 @@ Function .onInit
 	${AndIf} $CompassClickOnceProtocol != "https://"
 	  StrCpy $CompassClickOnceProtocol "http://"
     ${EndIf}
+    ReadIniStr $CompassApplicationServer "$AnswerFilePath" "Settings" "CompassApplicationServer"
     ReadIniStr $CompassClickOnceURL "$AnswerFilePath" "Settings" "CompassClickOnceURL"
     ReadIniStr $CompassPrintServer "$AnswerFilePath" "Settings" "CompassPrintServer"
     ReadIniStr $InstallCompassClientSMIcon "$AnswerFilePath" "Features" "InstallCompassClientSMIcon"
@@ -589,6 +604,7 @@ Function .onInit
   ${Else}
   ; If we get here, no answer file was provided so read the compiled in constants into the variables for configuration
     StrCPy "$CompassClickOnceProtocol" "${COMPASS_CLICKONCE_PROTOCOL}"
+    StrCPy "$CompassApplicationServer" "${COMPASS_APPLICATION_SERVER}"
     StrCpy "$CompassClickOnceURL" "${COMPASS_CLICKONCE_URL}"
     StrCpy "$CompassPrintServer" "${COMPASS_PRINT_SERVER}"
     StrCpy "$InstallCompassClientIcon" "${INSTALL_COMPASSCLIENT_ICON}"
@@ -665,6 +681,12 @@ Function .onInit
   ${ElseIf} $InstallNorthwoodsIcon == "False"
 	!insertmacro UnselectSection ${SECNORTHWOODSICON}
   ${EndIf}
+  
+  ${If} $InstallTrustedSites == "True"
+	!insertmacro SelectSection ${SECTRUSTEDSITES}
+  ${ElseIf} $InstallTrustedSites == "False"
+	!insertmacro UnselectSection ${SECTRUSTEDSITES}
+  ${EndIf}
 FunctionEnd
 
 
@@ -702,22 +724,36 @@ Function fnc_customsettings_Create
   ${NSD_OnChange} $hCtl_customsettings_DropList1 nsDialogsDropList1
 
   ; === GroupBox2 (type: GroupBox) ===
-  ${NSD_CreateGroupBox} 8u 73u 280u 28u "Print Server Name"
+  ${NSD_CreateGroupBox} 8u 70u 280u 28u "Print Server Name"
   Pop $hCtl_customsettings_GroupBox2
+  
+    ; === GroupBox3 (type: GroupBox) ===
+  ${NSD_CreateGroupBox} 8u 112u 280u 28u "Application Server Name"
+  Pop $hCtl_customsettings_GroupBox3
 
   ; === TextBox2 (type: Text) ===
-  ${NSD_CreateText} 12u 84u 271u 11u "$CompassPrintServer"
+  ${NSD_CreateText} 12u 82u 271u 11u "$CompassPrintServer"
   Pop $hCtl_customsettings_TextBox2
   
+    ; === TextBox3 (type: Text) ===
+  ${NSD_CreateText} 12u 124u 271u 11u "$CompassApplicationServer"
+  Pop $hCtl_customsettings_TextBox3
+  
   ${NSD_OnChange} $hCtl_customsettings_TextBox2 nsDialogsTextBox2
+  
+  ${NSD_OnChange} $hCtl_customsettings_TextBox3 nsDialogsTextBox3
 
   ; === Label1 (type: Label) ===
   ${NSD_CreateLabel} 8u 5u 280u 19u "Enter the URL from which Compass Pilot will be launched.  Either http or https can be chosen depending on how the server is configured."
   Pop $hCtl_customsettings_Label1
 
   ; === Label2 (type: Label) ===
-  ${NSD_CreateLabel} 12u 61u 275u 10u "Enter the network name of the print server."
+  ${NSD_CreateLabel} 12u 58u 275u 10u "Enter the network name of the print server."
   Pop $hCtl_customsettings_Label2
+  
+    ; === Label3 (type: Label) ===
+  ${NSD_CreateLabel} 12u 101u 275u 10u "Enter the network name of the application server."
+  Pop $hCtl_customsettings_Label3
 FunctionEnd
 
 
@@ -757,7 +793,14 @@ Function nsDialogsTextBox2
 FunctionEnd
 
 
+; Put the contents of the text box back in to the configuration variable
+; so any changes by the user running the installer are preserved
+Function nsDialogsTextBox3
+	Pop $1
+	${NSD_GetText} $hCtl_customsettings_TextBox3 $CompassApplicationServer
+FunctionEnd
 
+;ADD TRUSTED SITES
 Function RequireOneComponent
   ; Add code here to ensure that at least one component is selected
   ; before leaving the features page.  Make sure it works with silent installs!
@@ -841,33 +884,33 @@ Section Uninstall
   
    ; Uninstall Compass Forms and Tifconvert Ports for Windows XP
   ${If} ${IsWinXP}
-    DetailPrint "Uninstalling Tifconvert Printer for Windows XP"
+    DetailPrint "Uninstalling Tifconvert Printer for Windows XP."
     nsExec::Exec 'cscript C:\Windows\System32\prnmngr.vbs -d -p "${TIFCONVERT_PRINTER_NAME}"'
-    DetailPrint "Uninstalling Compass Forms Printer for Windows XP"
+    DetailPrint "Uninstalling Compass Forms Printer for Windows XP."
     nsExec::Exec 'cscript C:\Windows\System32\prnmngr.vbs -d -p "${FORMS_PRINTER_NAME}"'
   ${EndIf}
 
     ; Uninstall Compass Forms and Tifconvert Printers for Windows XP
   ${If} ${IsWinXP}
-    DetailPrint "Uninstalling Tifconvert Port for Windows XP"
+    DetailPrint "Uninstalling Tifconvert Port for Windows XP."
     nsExec::Exec 'cscript C:\Windows\System32\prnport.vbs -d -r "${TIFCONVERT_PORT_NAME}"'
-    DetailPrint "Uninstalling Compass Forms Printer Port for Windows XP"
+    DetailPrint "Uninstalling Compass Forms Printer Port for Windows XP."
     nsExec::Exec 'cscript C:\Windows\System32\prnport.vbs -d -r "${FORMS_PORT_NAME}"'
   ${EndIf}
 
   ; Uninstall Compass Forms and Tifconvert Ports for Windows Vista or Higher
   ${If} ${AtLeastWinVista}
-    DetailPrint "Uninstalling Tifconvert Printer for Windows Vista or Higher"
+    DetailPrint "Uninstalling Tifconvert Printer for Windows Vista or Higher."
     nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnmngr.vbs -d -p "${TIFCONVERT_PRINTER_NAME}"'
-    DetailPrint "Uninstalling Compass Forms Printer for Windows 7"
+    DetailPrint "Uninstalling Compass Forms Printer for Windows Vista or Higher."
     nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnmngr.vbs -d -p "${FORMS_PRINTER_NAME}"'
   ${EndIf}
   
     ; Uninstall Compass Forms and Tifconvert Printers for Windows Vista or Higher
   ${If} ${AtLeastWinVista}
-    DetailPrint "Uninstalling Tifconvert Port for Windows Vista or Higher"
+    DetailPrint "Uninstalling Tifconvert Port for Windows Vista or Higher."
     nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnport.vbs -d -r "${TIFCONVERT_PORT_NAME}"'
-    DetailPrint "Uninstalling Compass Forms Printer Port for Windows 7"
+    DetailPrint "Uninstalling Compass Forms Printer Port for Windows Vista or Higher."
     nsExec::Exec 'cscript C:\Windows\System32\Printing_Admin_Scripts\en-US\prnport.vbs -d -r "${FORMS_PORT_NAME}"'
   ${EndIf}
 
@@ -885,11 +928,13 @@ Section Uninstall
   RMDir "$INSTDIR"
 
   ; Remove information from the registry
+  DetailPrint "Uninstalling information from the registry."
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
+  ReadRegStr $CompassApplicationServer ${PRODUCT_REG_ROOT_KEY} "${PRODUCT_REG_KEY}" "CompassApplicationServer"
+  DeleteRegKey HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains\$CompassApplicationServer"
+  DeleteRegKey ${PRODUCT_REG_ROOT_KEY} "${PRODUCT_REG_KEY}"
   SetAutoClose true
 SectionEnd
-
-
 
 ; Called after the uninstaller completes successfully
 Function un.onUninstSuccess

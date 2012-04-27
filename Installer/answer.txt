@@ -1,5 +1,6 @@
 [Settings]
 CompassClickOnceProtocol=http://
+CompassApplicationServer=appserver01
 CompassClickOnceURL=appserver01/compassframework/compassapi.application
 CompassPrintServer=printserver01
 [Features]
@@ -13,5 +14,6 @@ InstallCaptureKioskIcon=False
 InstallSelfScanKioskSMIcon=False
 InstallSelfScanKioskIcon=False
 InstallNorthwoodsIcon=True
+InstallTrustedSites=False
 [Options]
 ClearClickOnceCache=True
