@@ -93,7 +93,7 @@ LangString DESC_CAPTURE_KIOSK_ICON ${LANG_ENGLISH} "Create Desktop shortcut for 
 LangString DESC_SELF_SCAN_KIOSK_SMICON ${LANG_ENGLISH} "Create Start Menu shortcut for the Self Scan Kiosk"
 LangString DESC_SELF_SCAN_KIOSK_ICON ${LANG_ENGLISH} "Create Desktop shortcut for the Self Scan Kiosk"
 LangString DESC_NORTHWOODS_ICON ${LANG_ENGLISH} "Create Start Menu shortcut for the Northwoods website"
-LangString DESC_TRUSTED_SITES ${LANG_ENGLISH} "Create registry entry for the trusted sites location of the application server"
+LangString DESC_TRUSTED_SITES ${LANG_ENGLISH} "Add the application server name to IE Trusted Sites under the HKLM registry branch"
 
 
 ; Includes ------
@@ -167,6 +167,7 @@ LangString DESC_TRUSTED_SITES ${LANG_ENGLISH} "Create registry entry for the tru
 !define INSTALL_SELFSCANKIOSK_SMICON "False"
 !define INSTALL_SELFSCANKIOSK_ICON "False"
 !define INSTALL_NORTHWOODS_ICON "True"
+!define INSTALL_TRUSTED_SITES "True"
 !define CLEAR_CLICKONCE_CACHE "True"
 
 ; This macro can be used for creating Internet shortcuts since the built-in CreateShortcut command
@@ -213,6 +214,7 @@ Section "-Pre"
   Var /global CompassApplicationServer
   Var /global CompassClickOnceURL
   Var /global CompassPrintServer
+  Var /global InstallTrustedSites
   Var /global InstallCompassClientSMIcon
   Var /global InstallCompassClientIcon
   Var /global InstallLEADTOOLSDLLs
@@ -250,6 +252,7 @@ Section "-Pre"
     DetailPrint "Answer file - InstallSelfScanKioskSMIcon: $InstallSelfScanKioskSMIcon"
     DetailPrint "Answer file - InstallSelfScanKioskIcon: $InstallSelfScanKioskIcon"
     DetailPrint "Answer file - InstallNorthwoodsIcon: $InstallNorthwoodsIcon"
+    DetailPrint "Answer file - InstallTrustedSites: $InstallTrustedSites"
     DetailPrint "Answer file - ClearClickOnceCache: $ClearClickOnceCache"
   ${EndIf}
 
@@ -267,7 +270,7 @@ Section "-Pre"
   ${EndIf}
 
   ; Place this icon so it is available for the entry in Add/Remove Programs
-  ; even if the Compass Client features is not chosen
+  ; even if the Compass Client feature is not chosen
   SetOutPath "$INSTDIR"
   File "Resources\CompassPilot.ico"
 SectionEnd
@@ -465,7 +468,7 @@ Section -Post
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\CompassPilot.ico"
   WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "EstimatedSize" 340
-  ;Write application server value to registry so it can be retrieved from the uninstall later
+  ;Write application server value to registry so it can be retrieved from the uninstaller later
   WriteRegStr ${PRODUCT_REG_ROOT_KEY} "${PRODUCT_REG_KEY}" "CompassApplicationServer" "$CompassApplicationServer"
 SectionEnd
 
@@ -595,6 +598,11 @@ Function .onInit
     ${If} $InstallNorthwoodsIcon != "True"
     ${AndIf} $InstallNorthwoodsIcon != "False"
 	  StrCpy $InstallNorthwoodsIcon "False"
+    ${EndIf}
+    ReadIniStr $InstallTrustedSites "$AnswerFilePath" "Features" "InstallTrustedSites"
+    ${If} $InstallTrustedSites != "True"
+    ${AndIf} $InstallTrustedSites != "False"
+	  StrCpy $InstallTrustedSites "False"
     ${EndIf}
     ReadIniStr $ClearClickOnceCache "$AnswerFilePath" "Options" "ClearClickOnceCache"
     ${If} $ClearClickOnceCache != "True"
@@ -831,6 +839,9 @@ Function RequireOneComponent
   IntOp $0 $0 & ${SF_SELECTED}
   IntOp $1 $1 + $0
   SectionGetFlags "${SECNORTHWOODSICON}" $0
+  IntOp $0 $0 & ${SF_SELECTED}
+  IntOp $1 $1 + $0
+  SectionGetFlags "${SECTRUSTEDSITES}" $0
   IntOp $0 $0 & ${SF_SELECTED}
   IntOp $1 $1 + $0
   StrCmp $1 "0" 0 +3
