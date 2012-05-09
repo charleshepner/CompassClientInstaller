@@ -6,14 +6,14 @@ CompassApplicationServer=appserver01
 [Features]
 InstallCompassClientSMIcon=True
 InstallCompassClientIcon=True
-InstallLEADTOOLSDLLs=True
-InstallFormsPrinter=True
+InstallLEADTOOLSDLLs=False
+InstallFormsPrinter=False
 InstallTifconvertPrinter=False
 InstallCaptureKioskSMIcon=False
 InstallCaptureKioskIcon=False
 InstallSelfScanKioskSMIcon=False
 InstallSelfScanKioskIcon=False
 InstallNorthwoodsIcon=True
-InstallTrustedSites=True
+InstallTrustedSites=False
 [Options]
 ClearClickOnceCache=True
